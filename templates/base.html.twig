@@ -5,9 +5,13 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="stylesheet" href="https://bootswatch.com/4/cosmo/bootstrap.min.css">
         <link rel="stylesheet" href="/css/base.css">
+        <!--Jquery bootstrap-->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <!--parallax-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/parallax.js/1.4.2/parallax.min.js"></script>
 
         {% block stylesheets %}{% endblock %}
 
@@ -26,14 +30,14 @@
 
             <div align="center" class="collapse navbar-collapse" id="navbarSupportedContent20"><!--id="navbarColor02"-->
               <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <li class="nav-item">
                   <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Actualités</a>
+                  <a class="nav-link" href="/actu">Actualités</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Nos Marques</a>
+                  <a class="nav-link" href="/marques">Nos Marques</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#">Boutique</a>
@@ -42,16 +46,16 @@
                   <a class="nav-link" href="#">Contact</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">À Propos</a>
+                  <a class="nav-link" href="/apropos">À Propos</a>
                 </li>
               </ul>
             </div>
 
         </nav>
 
-        <div class="container">
+        <!--<div class="container">-->
             {% block body %}{% endblock %}
-        </div>
+        <!--</div>-->
 
         <!-- Footer -->
         <footer class="page-footer font-small bg-dar pt-4">
@@ -63,7 +67,7 @@
             <div class="row text-center text-md-left mt-3 pb-3">
 
               <!-- Grid column -->
-              <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3 bite">
+              <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
                 <h6 class="text-uppercase mb-4 font-weight-bold">Company name</h6>
                 <p>Here you can use rows and columns to organize your footer content. Lorem ipsum dolor sit amet,
                   consectetur

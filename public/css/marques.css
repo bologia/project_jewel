@@ -1,0 +1,4 @@
+img:hover{
+    transition: 400ms;
+    transform: scale(1.12);
+}

@@ -8,19 +8,32 @@ use Symfony\Component\Routing\Annotation\Route;
 class BijouterieController extends AbstractController
 {
     /**
-     * @Route("/bijouterie", name="bijouterie")
+     * @Route("/", name="home")
      */
-    public function index()
-    {
-        return $this->render('bijouterie/index.html.twig', [
+    public function home() {
+        return $this->render('bijouterie/home.html.twig', [
             'controller_name' => 'BijouterieController',
         ]);
     }
 
     /**
-     * @Route("/", name="home")
+     * @Route("/actu", name="actu")
      */
-    public function home() {
-        return $this->render('bijouterie/home.html.twig');
+    public function actu() {
+        return $this->render('bijouterie/actu.html.twig');
+    }
+
+    /**
+     * @Route("/marques", name="marques")
+     */
+    public function marques() {
+        return $this->render('bijouterie/marques.html.twig');
+    }
+
+    /**
+     * @Route("/apropos", name="apropos")
+     */
+    public function apropos() {
+        return $this->render('bijouterie/apropos.html.twig');
     }
 }
