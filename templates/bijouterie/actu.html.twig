@@ -7,45 +7,25 @@
 <div class="container">
     <h3>Actualités</h3>
 
+    {% for news in newss %}
+
     <div class="jumbotron">
-        <h1 align="center" class="display-4">Hello, world!</h1>
+        <h1 align="center" class="display-4">{{ news.titreNews }}</h1>
         <br>
         <div class="row mx-auto">
             <div class="col-md-6">
-                <img src="imag/bague3.jpg" alt="" width="100%">
+                <img src="{{ news.imagNews }}" alt="" width="100%">
             </div>
             <div class="col-md-6">
-                <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+                <p class="lead">{{ news.textNews }}</p>
+                <hr class="my-4">
+                <p>Date de publi: {{ news.createdAt | date('d/m/Y') }} à {{ news.createdAt | date('H:i') }}</p>
             </div>
         </div>
     </div>
 
-    <div class="jumbotron">
-        <h1 align="center" class="display-4">Hello, world!</h1>
-        <br>
-        <div class="row mx-auto">
-            <div class="col-md-6">
-                <img src="imag/bague3.jpg" alt="" width="100%">
-            </div>
-            <div class="col-md-6">
-                <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="jumbotron">
-        <h1 align="center" class="display-4">Hello, world!</h1>
-        <br>
-        <div class="row mx-auto">
-            <div class="col-md-6">
-                <img src="imag/bague3.jpg" alt="" width="100%">
-            </div>
-            <div class="col-md-6">
-                <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-            </div>
-        </div>
-    </div>
-    
+    {% endfor %}
+        
 </div>
 
 {% endblock %}

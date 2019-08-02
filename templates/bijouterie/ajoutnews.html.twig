@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}<link rel="stylesheet" href="/css/.css">{% endblock %}
+{% block title %}{% endblock %}
+
+{% block body %}
+
+<br>
+<div class="container">
+
+<h1>Ajouter une actu !</h1>
+<br>
+
+    {% form_theme formnews 'bootstrap_4_layout.html.twig' %}
+    {{ form_start(formnews) }}
+
+    <label for="">Titre</label>
+    {{ form_widget(formnews.titreNews, {'attr': {'placeholder': "Titre de l'actu"}}) }}
+    <br>
+    <label for="">Texte</label>
+    {{ form_widget(formnews.textNews, {'attr': {'placeholder': "Texte de l'actu"}}) }}
+    <br>
+    <label for="">Image</label>
+    {{ form_widget(formnews.imagNews, {'attr': {'placeholder': "Cliquez ici pour choisir l'image associé de l'actu mais ça marche pas vraiment fuck"}}) }}
+
+    <br><br><br>
+    <center>
+    <button type="submit" class="btn btn-warning">Ajouter</button>
+    </center>
+
+    {{ form_end(formnews) }}
+
+</div>
+<br><br>
+
+{% endblock %}
