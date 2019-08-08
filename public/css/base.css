@@ -1,5 +1,5 @@
-h6 {
-  color: green;
+@media (max-width:991px) {
+
 }
 
 /* Icon 1 */
@@ -87,10 +87,6 @@ transform: rotate(-135deg);
 
 footer {
   background-color: pink; #373a3c;
-}
-
-.bite {
-  color: blue;
 }
 
 .hrfoot {

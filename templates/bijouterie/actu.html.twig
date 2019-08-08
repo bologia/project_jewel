@@ -7,14 +7,14 @@
 <div class="container">
     <h3>Actualités</h3>
 
-    {% for news in newss %}
+    {% for news in newss | reverse %}
 
     <div class="jumbotron">
         <h1 align="center" class="display-4">{{ news.titreNews }}</h1>
         <br>
         <div class="row mx-auto">
             <div class="col-md-6">
-                <img src="{{ news.imagNews }}" alt="" width="100%">
+                <img src="/imag/{{ news.imagNews }}" alt="" width="100%">
             </div>
             <div class="col-md-6">
                 <p class="lead">{{ news.textNews }}</p>
@@ -22,8 +22,10 @@
                 <p>Date de publi: {{ news.createdAt | date('d/m/Y') }} à {{ news.createdAt | date('H:i') }}</p>
             </div>
         </div>
+        <a href="{{ path('modifnews', {'id': news.id}) }}">Modifier</a>
     </div>
-
+    {% else %}
+    Pas d'article
     {% endfor %}
         
 </div>

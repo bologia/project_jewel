@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}<link rel="stylesheet" href="/css/shop.css">{% endblock %}
+{% block title %}{% endblock %}
+
+{% block body %}
+
+<h1>L'HEURE ET L'OR</h1>
+<hr>
+
+    <div align="center" class="" id=""><!--id="navbarColor02"-->
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="">Or</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="">Argent</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="">Montres</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="">Bracelets</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="">Colliers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Boucles d'oreilles</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Bagues</a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="proticles">
+
+        {% for produit in produits | reverse %}
+
+        <div class="card border-warning mb-3 cardbij" style="width: 25rem;">
+            <div class="card-header">{{ produit.nomProduit }}</div>
+            <div class="card-body">
+            <img src="/imag/{{ produit.imagProduit }}" alt="" width="100%">
+            <p align="center">{{ produit.prixProduit }} €</p>
+            <p class="card-text">{{ produit.descriptionProduit }}</p>
+            </div>
+            <a href="{{ path('modifproduit', {'id': produit.id}) }}">Modifier</a>
+        </div>
+
+        {% else %}
+        Pas d'article
+        {% endfor %}
+
+    </div>
+   
+{% endblock %}

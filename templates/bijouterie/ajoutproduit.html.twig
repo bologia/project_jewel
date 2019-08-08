@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}<link rel="stylesheet" href="/css/ajout.css">{% endblock %}
+{% block title %}{% endblock %}
+
+{% block body %}
+
+<br>
+<div class="container">
+
+<h1>Ajouter un article dans la boutique !</h1>
+<br>
+
+    {% form_theme formproduit 'bootstrap_4_layout.html.twig' %}
+    {{ form_start(formproduit) }}
+
+    <label for="">Nom du produit</label>
+    {{ form_widget(formproduit.nomProduit, {'attr': {'placeholder': "Nom du produit ici"}}) }}
+    <br>
+    <label for="">Prix du produit</label>
+    {{ form_widget(formproduit.prixProduit, {'attr': {'placeholder': "entrer le prix"}}) }}
+    <br>
+    <label for="">Image du produit</label>
+    {{ form_widget(formproduit.imagProduit, {'attr': {'placeholder': "Cliquez ici pour choisir l'image associé de l'actu mais ça marche pas vraiment fuck"}}) }}
+    <br><br>
+    <label for="">Description du produit</label>
+    {{ form_widget(formproduit.descriptionProduit, {'attr': {'placeholder': "une description"}}) }}
+    
+    <br><br><br>
+    <center>
+    <button type="submit" class="btn btn-warning">Ajouter le produit !!</button>
+    </center>
+
+    {{ form_end(formproduit) }}
+
+</div>
+<br><br>
+
+{% endblock %}
