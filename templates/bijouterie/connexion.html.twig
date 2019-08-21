@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}<link rel="stylesheet" href="/css/connexion.css">{% endblock %}
+{% block title %}{% endblock %}
+
+{% block body %}
+
+<br>
+<div class="container">
+
+<h1>Connexion</h1>
+<br>
+
+    <!-- 'bootstrap_4_layout.html.twig' -->
+    <form action="{{ path('connexion') }}" method="POST">
+        <div class="form-group">
+            <label for="">Entrez votre adresse email</label>
+            <input class="form-control" required name="_username" type="email">
+        </div>
+        <div class="form-group">
+            <label for="">Entrez votre mot de passe</label>
+            <input class="form-control" required name="_password" type="password">
+        </div>
+        <br>
+        {% if error %}
+        <div class="invalidlogin">L'email ou le mot de passe est incorrect !</div><br>
+        {% endif %}
+
+        <center>
+        <button type="submit" class="btn btn-warning">Se connecter</button>
+        </center>
+    </form>
+
+</div>
+<br><br>
+
+{% endblock %}

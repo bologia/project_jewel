@@ -18,7 +18,7 @@
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="/">L'Heure et L'Or</a>
+            <a class="navbar-brand" href="{{ path('home') }}">L'Heure et L'Or</a>
             <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>-->
@@ -31,39 +31,47 @@
             <div align="center" class="collapse navbar-collapse" id="navbarSupportedContent20"><!--id="navbarColor02"-->
               <ul class="navbar-nav mr-auto" style="width:100%">
                 <li class="nav-item">
-                  <a class="nav-link" href="/">Accueil <span class="sr-only">(current)</span></a>
+                  <a class="nav-link" href="{{ path('home') }}">Accueil <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="/actu">Actualités</a>
+                  <a class="nav-link" href="{{ path('actu') }}">Actualités</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="/marques">Marques</a>
+                  <a class="nav-link" href="{{ path('marques') }}">Marques</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="/services">Services</a>
+                  <a class="nav-link" href="{{ path('services') }}">Services</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="/shop">Boutique</a>
+                  <a class="nav-link" href="{{ path('shop') }}">Boutique</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#">Contact</a>
                 </li>
               </ul>
               <ul class="navbar-nav mr-auto">
+              {% if not app.user %}
               <li class="nav-item">
-                <a class="nav-link" href="#">Connexion</a>
+                  <a class="nav-link" href="{{ path('connexion') }}">Connexion</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Inscription</a>
+                  <a class="nav-link" href="{{ path('inscription') }}">Inscription</a>
               </li>
+              {% else %}
+              <li class="nav-item">
+                  <a class="nav-link" href="{{ path('deconnexion') }}">Deconnexion</a>
+              </li>
+              {% endif %}
               </ul>
             </div>
 
         </nav>
 
+        <div class="main">
         <!--<div class="container">-->
             {% block body %}{% endblock %}
         <!--</div>-->
+        </div>
 
         <!-- Footer -->
         <footer class="page-footer font-small bg-dar pt-4">

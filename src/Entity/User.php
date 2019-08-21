@@ -2,15 +2,20 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(fields={"emailUser"}, message="Cet email est déjà utilisé")
  */
-class User
+class User implements UserInterface
 {
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -30,23 +35,32 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email(message="Cet email n'est pas valide", checkMX = true)
      */
     private $emailUser;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="8", minMessage="Le mot de passe doit faire au minimum 8 caractères")
+     * @Assert\EqualTo(propertyPath="confirmmdp", message="Les 2 champs ne sont pas identiques")
      */
     private $mdpUser;
 
     /**
-     * @ORM\Column(type="integer")
+     * @Assert\EqualTo(propertyPath="mdpUser", message="Les 2 champs ne sont pas identiques")
      */
-    private $roleUser;
+    private $confirmmdp;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\News", mappedBy="user")
      */
     private $news;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Role", inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $roleUser;
 
     public function __construct()
     {
@@ -106,14 +120,14 @@ class User
         return $this;
     }
 
-    public function getRoleUser(): ?int
+    public function getConfirmmdp(): ?string
     {
-        return $this->roleUser;
+        return $this->confirmmdp;
     }
 
-    public function setRoleUser(int $roleUser): self
+    public function setConfirmmdp(string $confirmmdp): self
     {
-        $this->roleUser = $roleUser;
+        $this->confirmmdp = $confirmmdp;
 
         return $this;
     }
@@ -145,6 +159,36 @@ class User
                 $news->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPassword()
+    {
+        return $this->mdpUser;
+    }
+
+    public function getUsername()
+    {
+        return $this->prenomUser;
+    }
+
+    public function eraseCredentials() {}
+
+    public function getSalt() {}
+
+    public function getRoles() {
+        return ['ROLE_USER'];
+    }
+
+    public function getRoleUser(): ?Role
+    {
+        return $this->roleUser;
+    }
+
+    public function setRoleUser(?Role $roleUser): self
+    {
+        $this->roleUser = $roleUser;
 
         return $this;
     }

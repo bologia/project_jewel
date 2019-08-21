@@ -83,10 +83,16 @@ top: 11px;
 transform: rotate(-135deg);
 }
 
+/* pour fixer le footer en bas */
+
+.main {
+  min-height: calc(100vh - 54.38px - 364.38px);
+}
+
 /* Footer */
 
 footer {
-  background-color: pink; #373a3c;
+  background-color: #FFAB0A; #373a3c;
 }
 
 .hrfoot {

@@ -96,7 +96,7 @@ class BijouterieController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/modifnews", name="modifnews", methods={"GET","POST"})
+     * @Route("/{id}/modifnews", name="modifnews")
      */
     public function modifnews(News $news, Request $request, ObjectManager $manager) {
 
@@ -109,7 +109,6 @@ class BijouterieController extends AbstractController
 
         if($formnews->isSubmitted() && $formnews->isValid()) {
 
-
             $manager->persist($news);
             $manager->flush();
 
@@ -119,6 +118,20 @@ class BijouterieController extends AbstractController
         return $this->render('bijouterie/modifnews.html.twig', [
             'formnews' => $formnews->createView()
         ]);
+    }
+
+    /**
+     * @Route("/{id}/deletenews", name="deletenews")
+     */
+    public function deletenews(News $news, Request $request)
+    {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->remove($news);
+            $manager->flush();
+
+
+
+        return $this->redirectToRoute('actu');
     }
 
     /**
@@ -172,5 +185,43 @@ class BijouterieController extends AbstractController
         return $this->render('bijouterie/ajoutproduit.html.twig', [
             'formproduit' => $formproduit->createView()
         ]);
+    }
+
+    /**
+     * @Route("/{id}/modifproduit", name="modifproduit")
+     */
+    public function modifproduit(Produit $produit, Request $request, ObjectManager $manager) {
+
+        $formproduit = $this->createFormBuilder($produit)
+                         ->add('nomProduit')
+                         ->add('prixProduit')
+                         ->add('descriptionProduit')
+                         ->getForm();
+
+        $formproduit->handleRequest($request);
+
+        if($formproduit->isSubmitted() && $formproduit->isValid()) {
+                
+            $manager->persist($produit);
+            $manager->flush();
+
+            return $this->redirectToRoute('shop');
+        }
+
+        return $this->render('bijouterie/modifproduit.html.twig', [
+            'formproduit' => $formproduit->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/deleteproduit", name="deleteproduit")
+     */
+    public function deleteproduit(Produit $produit, Request $request)
+    {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->remove($produit);
+            $manager->flush();
+
+        return $this->redirectToRoute('shop');
     }
 }

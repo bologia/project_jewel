@@ -7,13 +7,14 @@
 <h1>L'HEURE ET L'OR</h1>
 <hr>
 
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div align="center" class="" id=""><!--id="navbarColor02"-->
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="">Or</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="">Argent</a>
+            <li class="nav-item">   
+                <a class="nav-link btn-outline-warning"><!--"btn btn-outline-warning"-->>Argent</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="">Montres</a>
@@ -30,8 +31,19 @@
             <li class="nav-item">
                 <a class="nav-link" href="#">Bagues</a>
             </li>
+            <li class="nav-item dropdown show">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">Dropdown</a>
+                <div class="dropdown-menu show" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 40px, 0px);">
+                  <a class="dropdown-item" href="#">Action</a>
+                  <a class="dropdown-item" href="#">Another action</a>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Separated link</a>
+                </div>
+              </li>
         </ul>
     </div>
+</nav>
     
     <div class="proticles">
 
@@ -44,7 +56,10 @@
             <p align="center">{{ produit.prixProduit }} €</p>
             <p class="card-text">{{ produit.descriptionProduit }}</p>
             </div>
+            {% if app.user %}
             <a href="{{ path('modifproduit', {'id': produit.id}) }}">Modifier</a>
+            <a href="{{ path('deleteproduit', {'id': produit.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ?')">Supprimer</a>
+            {% endif %}
         </div>
 
         {% else %}
@@ -52,5 +67,31 @@
         {% endfor %}
 
     </div>
+
+    <div class="d-flex justify-content-center">
+        <ul class="pagination">
+          <li class="page-item disabled">
+            <a class="page-link" href="#">&laquo;</a>
+          </li>
+          <li class="page-item active">
+            <a class="page-link" href="#">1</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">2</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">3</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">4</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">5</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">&raquo;</a>
+          </li>
+        </ul>
+      </div>
    
 {% endblock %}
