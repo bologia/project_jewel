@@ -56,7 +56,7 @@
             <p align="center">{{ produit.prixProduit }} €</p>
             <p class="card-text">{{ produit.descriptionProduit }}</p>
             </div>
-            {% if app.user %}
+            {% if is_granted('ROLE_ADMIN') %}
             <a href="{{ path('modifproduit', {'id': produit.id}) }}">Modifier</a>
             <a href="{{ path('deleteproduit', {'id': produit.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ?')">Supprimer</a>
             {% endif %}

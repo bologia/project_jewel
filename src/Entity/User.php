@@ -57,14 +57,14 @@ class User implements UserInterface
     private $news;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Role", inversedBy="users")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Role", inversedBy="users")
      */
     private $roleUser;
 
     public function __construct()
     {
         $this->news = new ArrayCollection();
+        $this->roleUser = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -178,17 +178,38 @@ class User implements UserInterface
     public function getSalt() {}
 
     public function getRoles() {
-        return ['ROLE_USER'];
+        
+        $roles = $this->roleUser->map(function($role){
+            return $role->getNomRole();
+        })->toArray();
+
+        $roles[] = 'ROLE_USER';
+
+        return $roles;
     }
 
-    public function getRoleUser(): ?Role
+    /**
+     * @return Collection|Role[]
+     */
+    public function getRoleUser(): Collection
     {
         return $this->roleUser;
     }
 
-    public function setRoleUser(?Role $roleUser): self
+    public function addRoleUser(Role $roleUser): self
     {
-        $this->roleUser = $roleUser;
+        if (!$this->roleUser->contains($roleUser)) {
+            $this->roleUser[] = $roleUser;
+        }
+
+        return $this;
+    }
+
+    public function removeRoleUser(Role $roleUser): self
+    {
+        if ($this->roleUser->contains($roleUser)) {
+            $this->roleUser->removeElement($roleUser);
+        }
 
         return $this;
     }

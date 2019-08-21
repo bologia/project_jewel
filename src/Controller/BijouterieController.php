@@ -9,6 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BijouterieController extends AbstractController
@@ -56,6 +57,7 @@ class BijouterieController extends AbstractController
 
     /**
      * @Route("/ajoutnews", name="ajoutnews")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function ajoutnews(Request $request, ObjectManager $manager) {
         $news = new News();
@@ -148,6 +150,7 @@ class BijouterieController extends AbstractController
 
     /**
      * @Route("/ajoutproduit", name="ajoutproduit")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function ajoutproduit(Request $request, ObjectManager $manager) {
         $produit = new Produit();

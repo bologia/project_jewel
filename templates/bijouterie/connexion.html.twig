@@ -10,6 +10,9 @@
 <h1>Connexion</h1>
 <br>
 
+    {% if error %}
+    <div class="alert alert-danger">L'email ou le mot de passe est incorrect !</div><br>
+    {% endif %}
     <!-- 'bootstrap_4_layout.html.twig' -->
     <form action="{{ path('connexion') }}" method="POST">
         <div class="form-group">
@@ -21,9 +24,6 @@
             <input class="form-control" required name="_password" type="password">
         </div>
         <br>
-        {% if error %}
-        <div class="invalidlogin">L'email ou le mot de passe est incorrect !</div><br>
-        {% endif %}
 
         <center>
         <button type="submit" class="btn btn-warning">Se connecter</button>
