@@ -61,10 +61,16 @@ class User implements UserInterface
      */
     private $roleUser;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Produit", inversedBy="users")
+     */
+    private $selectionne;
+
     public function __construct()
     {
         $this->news = new ArrayCollection();
         $this->roleUser = new ArrayCollection();
+        $this->selectionne = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -209,6 +215,32 @@ class User implements UserInterface
     {
         if ($this->roleUser->contains($roleUser)) {
             $this->roleUser->removeElement($roleUser);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Produit[]
+     */
+    public function getSelectionne(): Collection
+    {
+        return $this->selectionne;
+    }
+
+    public function addSelectionne(Produit $selectionne): self
+    {
+        if (!$this->selectionne->contains($selectionne)) {
+            $this->selectionne[] = $selectionne;
+        }
+
+        return $this;
+    }
+
+    public function removeSelectionne(Produit $selectionne): self
+    {
+        if ($this->selectionne->contains($selectionne)) {
+            $this->selectionne->removeElement($selectionne);
         }
 
         return $this;

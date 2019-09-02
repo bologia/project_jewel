@@ -10,28 +10,15 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div align="center" class="" id=""><!--id="navbarColor02"-->
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="">Or</a>
-            </li>
             <li class="nav-item">   
                 <a class="nav-link btn-outline-warning"><!--"btn btn-outline-warning"-->>Argent</a>
             </li>
+            {% for categorie in categories %}
             <li class="nav-item">
-                <a class="nav-link" href="">Montres</a>
+                <a class="nav-link" href="#">{{ categorie.nomCategorie }}</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="">Bracelets</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="">Colliers</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Boucles d'oreilles</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Bagues</a>
-            </li>
-            <li class="nav-item dropdown show">
+            {% endfor %}
+            <!--<li class="nav-item dropdown show">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">Dropdown</a>
                 <div class="dropdown-menu show" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 40px, 0px);">
                   <a class="dropdown-item" href="#">Action</a>
@@ -40,7 +27,7 @@
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="#">Separated link</a>
                 </div>
-              </li>
+              </li>-->
         </ul>
     </div>
 </nav>
@@ -52,6 +39,9 @@
         <div class="card border-warning mb-3 cardbij" style="width: 25rem;">
             <div class="card-header">{{ produit.nomProduit }}</div>
             <div class="card-body">
+            {% for categbadg in produit.categorieProduit %}
+            <span class="badge badge-warning">{{ categbadg.nomCategorie }}</span>
+            {% endfor %}
             <img src="/imag/{{ produit.imagProduit }}" alt="" width="100%">
             <p align="center">{{ produit.prixProduit }} €</p>
             <p class="card-text">{{ produit.descriptionProduit }}</p>

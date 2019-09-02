@@ -11,10 +11,17 @@
 <br>
 
     {% form_theme formproduit 'bootstrap_4_layout.html.twig' %}
-    {{ form_start(formproduit) }}
+  {#  {{ form_start(formproduit) }}
 
     <label for="">Nom du produit</label>
     {{ form_widget(formproduit.nomProduit, {'attr': {'placeholder': "Nom du produit ici"}}) }}
+    <br>
+    <label for="">Catégorie du produit</label>
+    {{ form_widget(formproduit.nomCategorie, {'attr': {'placeholder': "Catégorie du produit ici",
+    'class': "categoproduit selectpicker", 'data-live-search': "true", 'data-size': "5"}}) }}
+    <br>
+    <label for="">Taille du produit</label>
+    {{ form_widget(formproduit.taille, {'attr': {'placeholder': "Taille du produit ici"}}) }}
     <br>
     <label for="">Prix du produit</label>
     {{ form_widget(formproduit.prixProduit, {'attr': {'placeholder': "entrer le prix"}}) }}
@@ -30,9 +37,20 @@
     <button type="submit" class="btn btn-warning">Ajouter le produit !!</button>
     </center>
 
+    {{ form_end(formproduit) }} #}
+    {{ form_start(formproduit) }}
+    {{ form_widget(formproduit) }}
+        <center>
+            <button type="submit" class="btn btn-warning">Ajouter un produit !!</button>
+        </center>
     {{ form_end(formproduit) }}
-
 </div>
 <br><br>
 
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $('.categoproduit').selectpicker();
+</script>
 {% endblock %}

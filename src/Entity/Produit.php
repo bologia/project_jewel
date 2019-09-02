@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,6 +37,27 @@ class Produit
      * @ORM\Column(type="text", nullable=true)
      */
     private $descriptionProduit;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Categorie", mappedBy="produit")
+     */
+    private $categorieProduit;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Marque", inversedBy="produits")
+     */
+    private $marque;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="selectionne")
+     */
+    private $users;
+
+    public function __construct()
+    {
+        $this->categorieProduit = new ArrayCollection();
+        $this->users = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -85,6 +108,74 @@ class Produit
     public function setDescriptionProduit(?string $descriptionProduit): self
     {
         $this->descriptionProduit = $descriptionProduit;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Categorie[]
+     */
+    public function getCategorieProduit(): Collection
+    {
+        return $this->categorieProduit;
+    }
+
+    public function addCategorieProduit(Categorie $categorieProduit): self
+    {
+        if (!$this->categorieProduit->contains($categorieProduit)) {
+            $this->categorieProduit[] = $categorieProduit;
+            $categorieProduit->addProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategorieProduit(Categorie $categorieProduit): self
+    {
+        if ($this->categorieProduit->contains($categorieProduit)) {
+            $this->categorieProduit->removeElement($categorieProduit);
+            $categorieProduit->removeProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function getMarque(): ?Marque
+    {
+        return $this->marque;
+    }
+
+    public function setMarque(?Marque $marque): self
+    {
+        $this->marque = $marque;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addSelectionne($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            $user->removeSelectionne($this);
+        }
 
         return $this;
     }

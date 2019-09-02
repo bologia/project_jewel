@@ -5,9 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\AppartientRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ListeRepository")
  */
-class Appartient
+class Liste
 {
     /**
      * @ORM\Id()
@@ -17,23 +17,23 @@ class Appartient
     private $id;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $taille;
+    private $quantite;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTaille(): ?float
+    public function getQuantite(): ?int
     {
-        return $this->taille;
+        return $this->quantite;
     }
 
-    public function setTaille(?float $taille): self
+    public function setQuantite(?int $quantite): self
     {
-        $this->taille = $taille;
+        $this->quantite = $quantite;
 
         return $this;
     }
