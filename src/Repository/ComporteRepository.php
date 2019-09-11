@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Commande;
+use App\Entity\Comporte;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method Commande|null find($id, $lockMode = null, $lockVersion = null)
- * @method Commande|null findOneBy(array $criteria, array $orderBy = null)
- * @method Commande[]    findAll()
- * @method Commande[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Comporte|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Comporte|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Comporte[]    findAll()
+ * @method Comporte[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CommandeRepository extends ServiceEntityRepository
+class ComporteRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Commande::class);
+        parent::__construct($registry, Comporte::class);
     }
 
     // /**
-    //  * @return Commande[] Returns an array of Commande objects
+    //  * @return Comporte[] Returns an array of Comporte objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class CommandeRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Commande
+    public function findOneBySomeField($value): ?Comporte
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')

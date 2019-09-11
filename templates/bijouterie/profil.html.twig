@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}<link rel="stylesheet" href="/css/actu.css">{% endblock %}
+{% block title %}{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <br>
+    <h3>Bienvenue sur votre Profil {{ app.user.nomUser }} {{ app.user.prenomUser }}</h3>
+    <hr>
+    <a href="{{ path('modifprofil') }}">Modifier vos informations de Profil ici</a>
+    <br><br>
+    <p>Votre historique de commandes:</p>
+    {# Pour chaque panier(vag) dans la liste des paniers #}
+    {% for vag in paniers %}
+    <div class="my-5 bg-dark text-light">
+        <p>Commande du {{ vag.datePanier | localizeddate('none', 'none', null, null, 'EEEE d MMMM HH:mm') | capitalize }}</p>
+        {% for lol in vag.comportePanier %} {# lol (est égal) = (vaut) vag.comportePanier #}
+            <img src="/imag/{{ lol.produit.imagProduit }}" alt="" width="100px" style="height: 100px">
+            <p>{{ lol.produit.nomProduit }} - {{ lol.produit.prixProduit }} €</p>
+        {% endfor %}
+    </div>
+    {% endfor %}
+
+
+
+</div>
+
+{% endblock %}

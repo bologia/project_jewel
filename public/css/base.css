@@ -2,6 +2,14 @@
 
 }
 
+/* Loading */
+/* .loader{
+  cursor: wait;
+  height: 100vh;
+  width: 100vw;
+  z-index: 99999;
+} */
+
 /* Icon 1 */
 
 button.navbar-toggler {

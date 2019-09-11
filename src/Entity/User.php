@@ -35,19 +35,19 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Email(message="Cet email n'est pas valide", checkMX = true)
+     * @Assert\Email(message="Cet email n'est pas valide")
      */
     private $emailUser;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min="8", minMessage="Le mot de passe doit faire au minimum 8 caractères")
-     * @Assert\EqualTo(propertyPath="confirmmdp", message="Les 2 champs ne sont pas identiques")
+     * @Assert\EqualTo(propertyPath="confirmmdp", message="Les 2 champs ne sont pas identiques", groups={"inscription"})
      */
     private $mdpUser;
 
     /**
-     * @Assert\EqualTo(propertyPath="mdpUser", message="Les 2 champs ne sont pas identiques")
+     * @Assert\EqualTo(propertyPath="mdpUser", message="Les 2 champs ne sont pas identiques", groups={"inscription"})
      */
     private $confirmmdp;
 
@@ -62,15 +62,22 @@ class User implements UserInterface
     private $roleUser;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Produit", inversedBy="users")
+     * @ORM\OneToMany(targetEntity="App\Entity\Panier", mappedBy="user")
      */
-    private $selectionne;
+    private $effectue;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     * @Assert\Regex(pattern="/^[0-9]+$/", message="Chiffre seulement")
+     * @Assert\Length(max=10, maxMessage="Format invalide ({{ limit }} chiffres maximum)")
+     */
+    private $telUser;
 
     public function __construct()
     {
         $this->news = new ArrayCollection();
         $this->roleUser = new ArrayCollection();
-        $this->selectionne = new ArrayCollection();
+        $this->effectue = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -134,6 +141,18 @@ class User implements UserInterface
     public function setConfirmmdp(string $confirmmdp): self
     {
         $this->confirmmdp = $confirmmdp;
+
+        return $this;
+    }
+
+    public function getTelUser(): ?string
+    {
+        return $this->telUser;
+    }
+
+    public function setTelUser(string $telUser): self
+    {
+        $this->telUser = $telUser;
 
         return $this;
     }
@@ -221,28 +240,51 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Produit[]
+     * @return Collection|Panier[]
      */
-    public function getSelectionne(): Collection
+    public function getEffectue(): Collection
     {
-        return $this->selectionne;
+        return $this->effectue;
     }
 
-    public function addSelectionne(Produit $selectionne): self
+    /**
+     * Fonction qui teste si un produit est dans le panier courant
+     */
+    public function getAjoutPan(Produit $produit)
     {
-        if (!$this->selectionne->contains($selectionne)) {
-            $this->selectionne[] = $selectionne;
+        foreach($this->effectue as $panier){ // Parcours tous les paniers de l'utilisateur
+            if($panier->getDatePanier() == null){ // si la date du panier est null c'est que c'est le panier courant
+                foreach($panier->getComportePanier() as $comporte){ // Parcours tous les 'comporte' de l'utilisateur
+                    if($comporte->getProduit() == $produit){ // si dans ton comporte, il y a le produit
+                        return true; // Donc c'est good
+                    }
+                }
+            }
+        }
+        return false; // Sinon pas trouvé
+    }
+
+    public function addEffectue(Panier $effectue): self
+    {
+        if (!$this->effectue->contains($effectue)) {
+            $this->effectue[] = $effectue;
+            $effectue->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeSelectionne(Produit $selectionne): self
+    public function removeEffectue(Panier $effectue): self
     {
-        if ($this->selectionne->contains($selectionne)) {
-            $this->selectionne->removeElement($selectionne);
+        if ($this->effectue->contains($effectue)) {
+            $this->effectue->removeElement($effectue);
+            // set the owning side to null (unless already changed)
+            if ($effectue->getUser() === $this) {
+                $effectue->setUser(null);
+            }
         }
 
         return $this;
     }
+
 }

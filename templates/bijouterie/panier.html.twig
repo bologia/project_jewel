@@ -6,11 +6,63 @@
 
 <div class="container">
     <br>
-    <h3>Votre Panier</h3>
+    <h4>Panier</h4>
     <hr>
 
-    
-        
+    {% if panier is not null %}
+        <h2>Vous avez {{ panier.comportePanier|length }} Produit(s) dans votre Panier</h2>
+        <br>
+
+        {% for lol in panier.comportePanier %}
+
+        <div class="card mb-3">
+          <div class="row no-gutters">
+            <div class="col-md-3">
+              <img src="/imag/{{ lol.produit.imagProduit }}" style="height: 150px" class="card-img" alt="...">
+            </div>
+            <div class="col-md-5 align-self-center">
+              <div class="card-body">
+                <h5 class="card-title">{{ lol.produit.nomProduit }}</h5>
+                <p class="card-text">{{ lol.produit.prixProduit }} €</p>
+              </div>
+            </div>
+            <div class="col-md-2 align-self-center">
+              <p>benzaie ici la quantité</p>
+              <input type="number" name="howmuch">
+            </div>
+            <div class="col-md-2 align-self-center">
+              <p class="card-text"><small class="text-muted"><a href="{{ path('deletepropan', {"id": lol.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ?')">Supprimer du Panier</a></small></p>
+            </div>
+          </div>
+        </div>
+
+        {# <table class="table">
+          <tbody>
+            <tr class="table-warning">
+              <th scope="row"><img src="/imag/{{ lol.produit.imagProduit }}" style="width:150px; height:150px" class="card-img" alt="..."></th>
+              <td>{{ lol.produit.nomProduit }}</td>
+              <td>{{ lol.produit.prixProduit }} €</td>
+              <td><small class="text-muted"><a href="{{ path('deletepropan', {"id": lol.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ?')">Supprimer du Panier</a></small></td>
+            </tr>
+          </tbody>
+        </table> #}
+
+        {% endfor %}
+
+        <br>
+        <center>
+          <a type="button" class="btn btn-success" href="{{ path('validpanier') }}">Valider le Panier de réservation</a>
+        </center>  
+        <br><br>
+
+        {# {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+        {% endfor %} #}
+
+    {% endif %}
+
 </div>
 
 {% endblock %}

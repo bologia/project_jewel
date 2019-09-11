@@ -49,14 +49,14 @@ class Produit
     private $marque;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="selectionne")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comporte", mappedBy="produit")
      */
-    private $users;
+    private $comporteProduit;
 
     public function __construct()
     {
         $this->categorieProduit = new ArrayCollection();
-        $this->users = new ArrayCollection();
+        $this->comporteProduit = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -153,28 +153,31 @@ class Produit
     }
 
     /**
-     * @return Collection|User[]
+     * @return Collection|Comporte[]
      */
-    public function getUsers(): Collection
+    public function getComporteProduit(): Collection
     {
-        return $this->users;
+        return $this->comporteProduit;
     }
 
-    public function addUser(User $user): self
+    public function addComporteProduit(Comporte $comporteProduit): self
     {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->addSelectionne($this);
+        if (!$this->comporteProduit->contains($comporteProduit)) {
+            $this->comporteProduit[] = $comporteProduit;
+            $comporteProduit->setProduit($this);
         }
 
         return $this;
     }
 
-    public function removeUser(User $user): self
+    public function removeComporteProduit(Comporte $comporteProduit): self
     {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
-            $user->removeSelectionne($this);
+        if ($this->comporteProduit->contains($comporteProduit)) {
+            $this->comporteProduit->removeElement($comporteProduit);
+            // set the owning side to null (unless already changed)
+            if ($comporteProduit->getProduit() === $this) {
+                $comporteProduit->setProduit(null);
+            }
         }
 
         return $this;

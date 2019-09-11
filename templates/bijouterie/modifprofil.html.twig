@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}<link rel="stylesheet" href="/css/actu.css">{% endblock %}
+{% block title %}{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <br>
+    <h3>Bienvenue sur votre Profil {{ app.user.nomUser }} {{ app.user.prenomUser }}</h3>
+    <hr>
+
+    {{ form_start(formprofil) }}
+    
+    {{ form_row(formprofil.nomUser, {'label': 'Modifier votre Nom'}) }}
+    {{ form_row(formprofil.prenomUser, {'label': 'Modifier votre Prénom'}) }}
+    {{ form_row(formprofil.emailUser, {'label': 'Modifier votre Adresse email'}) }}
+    {{ form_row(formprofil.telUser, {'label': 'Modifier votre numéro de téléphone'}) }}
+
+    <br>
+    <button type="submit" class="btn btn-info">Enregistrer les modifications</button>
+
+    <div class="my-5">{# margin top and bottom (max 5) #}
+        {{ form_end(formprofil) }}
+    </div>
+    
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }} <a href="{{ path('profil') }}">Retourner au Profil ici</a>
+        </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

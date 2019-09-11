@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}<link rel="stylesheet" href="/css/actu.css">{% endblock %}
+{% block title %}{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <br>
+    <h3>Bienvenue Administrateur {{ app.user.nomUser }} {{ app.user.prenomUser }}</h3>
+    <hr>
+    <p>Liste des commandes :</p>
+
+    {% for vag in panierval %}
+    <div class="my-5 bg-dark text-light">
+        <p>Commande du {{ vag.datePanier|localizeddate('none', 'none', null, null, 'EEEE d MMMM HH:mm') | capitalize }} par {{ vag.user.nomUser }} {{ vag.user.prenomUser }}</p>
+        {% for lol in vag.comportePanier %}
+            <img src="/imag/{{ lol.produit.imagProduit }}" alt="" width="100px" style="height: 100px">
+            <p>{{ lol.produit.nomProduit }} - {{ lol.produit.prixProduit }} €</p>
+        {% endfor %}
+        <input type="checkbox" name="" id="">
+    </div>
+    {% endfor %}
+
+
+
+</div>
+
+{% endblock %}

@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\InscriptionType;
+use App\Repository\PanierRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -51,4 +53,18 @@ class SecurityController extends AbstractController
      * @Route("/deconnexion", name="deconnexion")
      */
     public function deconnexion() {}
+
+    /**
+     * @Route("/listecommand", name="listecommand")
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function listecommand(PanierRepository $repo) {
+
+        $panierval = $repo->findAllValid(); //ceci est dans le panierrepository
+
+        return $this->render('bijouterie/listecommand.html.twig', [
+            'panierval' => $panierval
+        ]);
+    }
+    
 }

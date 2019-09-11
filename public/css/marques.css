@@ -1,4 +1,4 @@
-img:hover{
+img:not(.what):hover{
     transition: 400ms;
     transform: scale(1.12);
 }

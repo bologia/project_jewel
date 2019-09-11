@@ -1,13 +1,20 @@
 {% extends 'base.html.twig' %}
-{% block stylesheets %}<link rel="stylesheet" href="/css/shop.css">{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="/css/shop.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
 {% block title %}{% endblock %}
 
 {% block body %}
-
-<h1>L'HEURE ET L'OR</h1>
+<div class="container">
+  <br>
+  <h1>Boutique de réservations</h1>
+  <h5>Vous pouvez commander vos articles pour les réserver puis ensuite venir les chercher directement à la boutique :)</h5>
+</div>
 <hr>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+{# <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div align="center" class="" id=""><!--id="navbarColor02"-->
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">   
@@ -18,38 +25,99 @@
                 <a class="nav-link" href="#">{{ categorie.nomCategorie }}</a>
             </li>
             {% endfor %}
-            <!--<li class="nav-item dropdown show">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">Dropdown</a>
-                <div class="dropdown-menu show" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 40px, 0px);">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Separated link</a>
-                </div>
-              </li>-->
         </ul>
     </div>
-</nav>
+</nav> #}
+
+<div class="navbare">
+  <div class="dropdowne">
+    <button class="dropbtne">Bijouterie 
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdowne-content">
+      <a href="#">Link 1</a>
+      <a href="#">Link 2</a>
+      <a href="#">Link 3</a>
+    </div>
+  </div> 
+  <div class="dropdowne">
+    <button class="dropbtne">Horlogerie 
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdowne-content">
+      <a href="#">Link 1</a>
+      <a href="#">Link 2</a>
+      <a href="#">Link 3</a>
+    </div>
+  </div> 
+  <div class="dropdowne">
+    <button class="dropbtne">Maroquinerie 
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdowne-content">
+      <a href="#">Link 1</a>
+      <a href="#">Link 2</a>
+      <a href="#">Link 3</a>
+    </div>
+  </div>
+  <div class="dropdowne">
+    <button class="dropbtne">Matériaux 
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdowne-content">
+      <a href="#">Link 1</a>
+      <a href="#">Link 2</a>
+      <a href="#">Link 3</a>
+    </div>
+  </div>
+  <div class="dropdowne">
+    <button class="dropbtne">Marques 
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdowne-content">
+      {% for mdr in marques %}
+        <a href="#">{{ mdr.nomMarque }}</a>
+      {% endfor %}
+    </div>
+  </div> 
+</div>
+
+<hr>
     
     <div class="proticles">
 
         {% for produit in produits | reverse %}
 
-        <div class="card border-warning mb-3 cardbij" style="width: 25rem;">
+        <div class="card border-warning mb-3 cardbij" style="width: 25rem; height: 600px">
             <div class="card-header">{{ produit.nomProduit }}</div>
-            <div class="card-body">
+            <div class="card-body" style="height: 600px; overflow: auto;">
             {% for categbadg in produit.categorieProduit %}
             <span class="badge badge-warning">{{ categbadg.nomCategorie }}</span>
             {% endfor %}
-            <img src="/imag/{{ produit.imagProduit }}" alt="" width="100%">
+            <img src="/imag/{{ produit.imagProduit }}" alt="" width="100%" style="height: 300px">
+            {% if produit.marque is not null %}
+            <span class="badge badge-info">{{ produit.marque.nomMarque }}</span>
+            {% endif %}
             <p align="center">{{ produit.prixProduit }} €</p>
             <p class="card-text">{{ produit.descriptionProduit }}</p>
             </div>
+            <div class="card-footer">
+            {% if app.user %}
+            {% if app.user.ajoutPan(produit) %}
+            <center><button data-url="{{ path('deletpropan', {'id': produit.id}) }}" class="btn btn-danger deletpropan">Retirer du Panier</button></center>
+            <center class="d-none"><button data-url="{{ path('ajouter_produit', {'id': produit.id}) }}" class="btn btn-secondary ajoutpan">Ajouter au Panier</button></center>
+            
+            {% else %}
+            <center><button data-url="{{ path('ajouter_produit', {'id': produit.id}) }}" class="btn btn-secondary ajoutpan">Ajouter au Panier</button></center>
+            <center class="d-none"><button data-url="{{ path('deletpropan', {'id': produit.id}) }}" class="btn btn-danger deletpropan">Retirer du Panier</button></center>
+            
+            {% endif %}
+            {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
             <a href="{{ path('modifproduit', {'id': produit.id}) }}">Modifier</a>
             <a href="{{ path('deleteproduit', {'id': produit.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ?')">Supprimer</a>
             {% endif %}
+            </div>
         </div>
 
         {% else %}

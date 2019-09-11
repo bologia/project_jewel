@@ -6,9 +6,8 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
-class InscriptionType extends AbstractType
+class ProfilType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -17,8 +16,6 @@ class InscriptionType extends AbstractType
             ->add('prenomUser')
             ->add('emailUser')
             ->add('telUser')
-            ->add('mdpUser', PasswordType::class)
-            ->add('confirmmdp', PasswordType::class)
         ;
     }
 
@@ -26,7 +23,6 @@ class InscriptionType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'validation_groups' => ['inscription']
         ]);
     }
 }
