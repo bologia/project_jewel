@@ -1,0 +1,24 @@
+.active-panier{
+  background: rgb(120, 179, 120) !important;
+  color: white !important;
+}
+
+/* pour les boutons de paginations */
+
+.page-link {
+  color: #ff7518;
+}
+
+.page-link:hover {
+  color: #ff7518;
+}
+
+.page-link:focus {
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(211, 92, 12, 0.25);
+  box-shadow: 0 0 0 0.2rem rgba(211, 92, 12, 0.25)
+}
+
+.page-item.active .page-link {
+  background-color: #ff7518;
+  border-color: #ff7518
+}

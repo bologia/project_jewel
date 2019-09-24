@@ -13,19 +13,25 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class NewsController extends AbstractController
 {
     /**
-     * @Route("/actu", name="actu")
+     * @Route("/actu/{page}", name="actu", requirements={"page": "\d+"})
      */
-    public function actu() {
+    public function actu($page = 1) {
         $repo = $this->getDoctrine()->getRepository(News::class);
 
-        $newss = $repo->findAll();
-        /*
-        $repo->find(1) : news id 1
-        $repo->findBy() : critere
-        $repo->findOneBy() : idem mais un seul
-        */
+        $limite = 10;
+
+        $start = $page * $limite - $limite;
+
+        $newss = $repo->findBy([], ['id' => 'DESC'], $limite, $start);
+
+        $total = count($repo->findAll());
+
+        $pages = ceil($total / $limite);
+
         return $this->render('bijouterie/actu.html.twig', [
-            'newss' => $newss
+            'newss' => $newss,
+            'pages' => $pages,
+            'page' => $page
         ]);
     }
 

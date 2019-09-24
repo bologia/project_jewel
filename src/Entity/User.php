@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity(fields={"emailUser"}, message="Cet email est déjà utilisé")
+ * @UniqueEntity(fields={"emailUser"}, message="Cet email est déjà utilisé", groups={"inscription"})
  */
 class User implements UserInterface
 {
@@ -35,13 +35,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Email(message="Cet email n'est pas valide")
+     * @Assert\Email(message="Cet email n'est pas valide", groups={"inscription"})
      */
     private $emailUser;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="8", minMessage="Le mot de passe doit faire au minimum 8 caractères")
+     * @Assert\Length(min="8", minMessage="Le mot de passe doit faire au minimum 8 caractères", groups={"inscription"})
      * @Assert\EqualTo(propertyPath="confirmmdp", message="Les 2 champs ne sont pas identiques", groups={"inscription"})
      */
     private $mdpUser;

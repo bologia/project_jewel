@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Marque;
 use App\Entity\Produit;
+use App\Entity\Materiel;
 use App\Entity\Categorie;
 use App\Form\ProduitType;
+use App\Repository\MaterielRepository;
 use App\Repository\CategorieRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -19,7 +22,7 @@ class ProduitController extends AbstractController
      * @Route("/ajoutproduit", name="ajoutproduit")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function ajoutproduit(Request $request, ObjectManager $manager, CategorieRepository $repocategorie) {
+    public function ajoutproduit(Request $request, ObjectManager $manager, CategorieRepository $repocategorie, MaterielRepository $repomat) {
 
         $produit = new Produit();
         $formproduit = $this->createForm(ProduitType::class, $produit);
@@ -34,6 +37,11 @@ class ProduitController extends AbstractController
                 // findOneBy() -> comme au dessus, mais recupère qu'un seul
                 $category = $repocategorie->find($cat_id);
                 $produit->addCategorieProduit($category);
+            }
+
+            foreach($data['Materiel'] as $mat_id) {
+                $material = $repomat->find($mat_id);
+                $produit->addMateriel($material);
             }
 
             $image = $formproduit->get('imagProduit')->getData();
@@ -67,17 +75,30 @@ class ProduitController extends AbstractController
     public function modifproduit(Produit $produit, Request $request, ObjectManager $manager) {
 
         $formproduit = $this->createFormBuilder($produit)
-                         ->add('nomProduit')
-                         ->add('prixProduit')
-                         ->add('Categorie', EntityType::class, [
-                            'class'         => Categorie::class,
-                            'choice_label'  => 'nomCategorie',
-                            'label'         => 'Catégorie(s) produit',
-                            'multiple'      => true,
-                            'mapped'        => false
-                        ])
-                         ->add('descriptionProduit')
-                         ->getForm();
+                        ->add('nomProduit')
+                        ->add('prixProduit')
+                        // ->add('Categorie', EntityType::class, [
+                        //     'class'         => Categorie::class,
+                        //     'choice_label'  => 'nomCategorie',
+                        //     'label'         => 'Catégorie(s) produit',
+                        //     'multiple'      => true,
+                        //     'mapped'        => false
+                        // ])
+                        // ->add('Materiel', EntityType::class, [
+                        //     'class'         => Materiel::class,
+                        //     'choice_label'  => 'nomMateriel',
+                        //     'label'         => 'Matière(s) du produit',
+                        //     'multiple'      => true,
+                        //     'mapped'        => false
+                        // ])
+                        // ->add('Marque', EntityType::class, [
+                        //     'class'         => Marque::class,
+                        //     'choice_label'  => 'nomMarque',
+                        //     'label'         => 'Marque',
+                        //     //'mapped'        => false
+                        // ])
+                        ->add('descriptionProduit')
+                        ->getForm();
 
         $formproduit->handleRequest($request);
 
@@ -101,9 +122,12 @@ class ProduitController extends AbstractController
     public function deleteproduit(Produit $produit, Request $request)
     {
             $manager = $this->getDoctrine()->getManager();
-            $manager->remove($produit);
+
+            $produit->setActiveProduit(false);
+            $manager->persist($produit);
             $manager->flush();
 
         return $this->redirectToRoute('shop');
     }
+    
 }

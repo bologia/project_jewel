@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
 <link rel="stylesheet" href="/css/shop.css">
+<link rel="stylesheet" href="/css/awesome-bootstrap-checkbox.css">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock %}
 {% block title %}{% endblock %}
 
@@ -13,31 +13,24 @@
   <h5>Vous pouvez commander vos articles pour les réserver puis ensuite venir les chercher directement à la boutique :)</h5>
 </div>
 <hr>
+<h5 class="ml-3"><strong style="text-decoration: underline;">Filtrer vos recherches:</strong></h5>
 
-{# <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div align="center" class="" id=""><!--id="navbarColor02"-->
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">   
-                <a class="nav-link btn-outline-warning"><!--"btn btn-outline-warning"-->>Argent</a>
-            </li>
-            {% for categorie in categories %}
-            <li class="nav-item">
-                <a class="nav-link" href="#">{{ categorie.nomCategorie }}</a>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-</nav> #}
+<!--c'était la navbar stylé-->
 
-<div class="navbare">
+{# <div class="navbare">
   <div class="dropdowne">
     <button class="dropbtne">Bijouterie 
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdowne-content">
-      <a href="#">Link 1</a>
-      <a href="#">Link 2</a>
-      <a href="#">Link 3</a>
+      <a href="#">Bagues</a>
+      <a href="#">Boucles d'oreilles</a>
+      <a href="#">Bracelets</a>
+      <a href="#">Chaînes</a>
+      <a href="#">Colliers</a>
+      <a href="#">Pendentifs</a>
+      <a href="#">Boutons de manchettes</a>
+      <a href="#">Broches</a>
     </div>
   </div> 
   <div class="dropdowne">
@@ -45,9 +38,9 @@
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdowne-content">
-      <a href="#">Link 1</a>
-      <a href="#">Link 2</a>
-      <a href="#">Link 3</a>
+      <a href="#">Montres</a>
+      <a href="#">Réveils</a>
+      <a href="#">Horloges</a>
     </div>
   </div> 
   <div class="dropdowne">
@@ -55,9 +48,7 @@
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdowne-content">
-      <a href="#">Link 1</a>
-      <a href="#">Link 2</a>
-      <a href="#">Link 3</a>
+      <a href="#">Sacs</a>
     </div>
   </div>
   <div class="dropdowne">
@@ -65,9 +56,10 @@
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdowne-content">
-      <a href="#">Link 1</a>
-      <a href="#">Link 2</a>
-      <a href="#">Link 3</a>
+      <a href="#">Or</a>
+      <a href="#">Argent</a>
+      <a href="#">Acier</a>
+      <a href="#">Plaqué</a>
     </div>
   </div>
   <div class="dropdowne">
@@ -80,21 +72,97 @@
       {% endfor %}
     </div>
   </div> 
-</div>
+</div> #}
 
+<form action="{{ path('filter') }}" name="filtres" method="POST">
+  <div class="d-flex flex-wrap">  
+    {# {% for key, mdr in categories|slice(0,12) %} ici c'était pour tricher avec les matériaux avant #}
+    {% for mdr in categories %}
+    <div class="checkbox checkbox-warning">
+      <input id="{{ mdr.nomCategorie }}" type="checkbox" class="styled" name="filtrecat[]" value="{{ mdr.id }}"
+      {% if lastCategories is defined and lastCategories is not empty %} {# pour que les box restent checked #}
+        {% for gianni in lastCategories %}
+          {% if gianni == mdr %} {# Si la categorie est égale à l'une des categories qu'on a choisi #}
+            checked
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+      >
+      <label for="{{ mdr.nomCategorie }}">
+        {{ mdr.nomCategorie }}
+      </label>
+    </div>
+    {% endfor %}
+  </div>
+
+    {# {% for key, mdr in categories %}
+      {% if key > 11 %} ici la suite de l'ancienne triche materiaux #}  
+
+  <h5 class="ml-3"><strong style="text-decoration: underline;">Filtrer par marques:</strong></h5>
+
+  <div class="d-flex flex-wrap">
+    {% for mdr in marques %}
+    <div class="checkbox checkbox-warning">
+      <input id="{{ mdr.nomMarque }}" type="checkbox" class="styled" name="filtremarq[]" value="{{ mdr.id }}"
+      {% if lastMarques is defined and lastMarques is not empty %} {# pour que les box restent checked #}
+        {% for gianni in lastMarques %}
+          {% if gianni == mdr %} {# Si la categorie est égale à l'une des categories qu'on a choisi #}
+            checked
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+      >
+      <label for="{{ mdr.nomMarque }}">
+        {{ mdr.nomMarque }}
+      </label>
+    </div>
+    {% endfor %}
+  </div>
+
+  <h5 class="ml-3"><strong style="text-decoration: underline;">Filtrer par matières:</strong></h5>
+
+  <div class="d-flex flex-wrap">
+    {% for mdr in materiaux %}
+    <div class="checkbox checkbox-warning">
+      <input id="{{ mdr.nomMateriel }}" type="checkbox" class="styled" name="filtremat[]" value="{{ mdr.id }}"
+      {% if lastMat is defined and lastMat is not empty %} {# pour que les box restent checked #}
+        {% for gianni in lastMat %}
+          {% if gianni == mdr %} {# Si la categorie est égale à l'une des categories qu'on a choisi #}
+            checked
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+      >
+      <label for="{{ mdr.nomMateriel }}">
+        {{ mdr.nomMateriel }}
+      </label>
+    </div>
+    {% endfor %}
+  </div>
+  
+  <center><button type="submit" class="btn btn-warning">Valider</button></center>
+  
+</form>
+  
 <hr>
     
+<p class="px-3">
+  <b>{{ nombre }}</b> résultats trouvés
+</p>
+
     <div class="proticles">
+        {% for produit in produits %}
 
-        {% for produit in produits | reverse %}
-
-        <div class="card border-warning mb-3 cardbij" style="width: 25rem; height: 600px">
+        <div class="card border-warning mb-3 cardbij" style="width: 25rem; height: 660px">
             <div class="card-header">{{ produit.nomProduit }}</div>
             <div class="card-body" style="height: 600px; overflow: auto;">
             {% for categbadg in produit.categorieProduit %}
-            <span class="badge badge-warning">{{ categbadg.nomCategorie }}</span>
+            <span class="badge badge-danger">{{ categbadg.nomCategorie }}</span>
             {% endfor %}
-            <img src="/imag/{{ produit.imagProduit }}" alt="" width="100%" style="height: 300px">
+            {% for matbadg in produit.materiel %}
+            <span class="badge badge-warning">{{ matbadg.nomMateriel }}</span>
+            {% endfor %}
+            <img src="/imag/{{ produit.imagProduit }}" alt="" class="lolol" width="100%" style="height: 324px">
             {% if produit.marque is not null %}
             <span class="badge badge-info">{{ produit.marque.nomMarque }}</span>
             {% endif %}
@@ -114,42 +182,63 @@
             {% endif %}
             {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
-            <a href="{{ path('modifproduit', {'id': produit.id}) }}">Modifier</a>
-            <a href="{{ path('deleteproduit', {'id': produit.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ?')">Supprimer</a>
+            <br>
+            <a class="btn btn-light" style="border: 1px solid rgba(0, 0, 0, 0.15)" href="{{ path('modifproduit', {'id': produit.id}) }}">Modifier</a>
+            <a class="btn btn-light" style="cursor: pointer; border: 1px solid rgba(0, 0, 0, 0.15)" data-toggle="modal" data-target="#confirm-{{produit.id}}">Supprimer</a>
+
+              <!-- Modal -->
+
+<div class="modal fade" id="confirm-{{produit.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Êtes-vous sûr de vouloir supprimer ce produit ?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {# <div class="modal-body">
+        ...
+      </div> #}
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+        <a type="button" class="btn btn-danger" href="{{ path('deleteproduit', {'id': produit.id}) }}">Supprimer</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
             {% endif %}
             </div>
         </div>
 
         {% else %}
-        Pas d'article
+        Aucun produit
         {% endfor %}
 
     </div>
+    {% if lastCategories is defined and lastMarques is defined and lastMat is defined %}
+      
 
+
+    {% endif %}
     <div class="d-flex justify-content-center">
         <ul class="pagination">
-          <li class="page-item disabled">
-            <a class="page-link" href="#">&laquo;</a>
-          </li>
-          <li class="page-item active">
-            <a class="page-link" href="#">1</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="#">2</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="#">3</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="#">4</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="#">5</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="#">&raquo;</a>
-          </li>
+            <li class="page-item {% if page == 1 %}disabled{% endif %}">
+            <a class="page-link" href="{{ path('shop', {'page': page - 1}) }}">&laquo;</a>
+            </li>
+            {% for i in 1..pages %}
+            <li class="page-item {% if page == i %}active{% endif %}">
+            <a class="page-link" href="{{ path('shop', {'page': i}) }}">{{ i }}</a>
+            </li>
+            {% endfor %}
+            <li class="page-item {% if page == pages %}disabled{% endif %}">
+            <a class="page-link" href="{{ path('shop', {'page': page + 1}) }}">&raquo;</a>
+            </li>
         </ul>
-      </div>
+    </div>
+
+
    
 {% endblock %}

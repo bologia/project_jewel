@@ -19,13 +19,18 @@
     <label for="">Prix du produit</label>
     {{ form_widget(formproduit.prixProduit, {'attr': {'placeholder': "Entrer le prix sans le signe €"}}) }}
     <br>
-    <label for="">Catégorie du produit</label>
+    <label for="">Catégorie(s) du produit</label>
     {{ form_widget(formproduit.Categorie, {'attr': {
     'class': "categoproduit selectpicker", 'data-live-search': "true", 'data-size': "5"}}) }}
+    <br><br>
+    <label for="">Matière(s) du produit</label>
+    {{ form_widget(formproduit.Materiel, {'attr': {
+    'class': "matproduit selectpicker", 'data-live-search': "true", 'data-size': "5"}}) }}
     <br><br>
     <label for="">Marque du produit</label>
     {{ form_widget(formproduit.Marque, {'attr': {'placeholder': "Cliquez ici pour cho"}}) }}
     <br>
+    {{ form_errors(formproduit.imagProduit) }} {# erreur pour imagProduit #}
     <label for="">Image du produit</label>
     {{ form_widget(formproduit.imagProduit, {'attr': {'placeholder': "Cliquez ici pour choisir l'image associé de l'actu mais ça marche pas vraiment fuck"}}) }}
     <br><br>
@@ -52,5 +57,6 @@
 {% block javascripts %}
 <script>
     $('.categoproduit').selectpicker();
+    $('.matproduit').selectpicker();
 </script>
 {% endblock %}

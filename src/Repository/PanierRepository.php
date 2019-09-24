@@ -38,10 +38,10 @@ class PanierRepository extends ServiceEntityRepository
     
     public function findOneByUser($user)
     {
-        return $this->createQueryBuilder('p') //panier
-            ->andWhere('p.user = :user') //on récupère le panier du user qu'on lui envoie ($user)
-            ->andWhere('p.datePanier is null') //et si la date est null (pas encore validé)
-            ->setParameter('user', $user) //tj pareil lol
+        return $this->createQueryBuilder('p')       //panier
+            ->andWhere('p.user = :user')            //on récupère le panier du user qu'on lui envoie ($user)
+            ->andWhere('p.datePanier is null')      //et si la date est null (pas encore validé)
+            ->setParameter('user', $user)           //on passe les paramètres
             ->getQuery()
             ->getOneOrNullResult()
         ;
@@ -59,13 +59,16 @@ class PanierRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findAllValid()
+    public function findAllValid($limite, $start)
     {
-        return $this->createQueryBuilder('p') //panier
-            ->andWhere('p.datePanier is not null') //on récupère tout les paniers validés par tout les users
+        return $this->createQueryBuilder('p')        //panier
+            ->andWhere('p.datePanier is not null')   //on récupère tout les paniers validés par tout les users
             ->orderBy('p.datePanier', 'DESC')
+            ->setFirstResult($start)
+            ->setMaxResults($limite)
             ->getQuery()
             ->getResult()
         ;
     }
+
 }

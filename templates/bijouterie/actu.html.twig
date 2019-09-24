@@ -5,12 +5,14 @@
 {% block body %}
 
 <div class="container">
-    <h3>Actualités</h3>
+    <br>
+    <h1>Actualités</h1>
+    <hr>
 
-    {% for news in newss | reverse %}
+    {% for news in newss %}
 
     <div class="jumbotron">
-        <h1 align="center" class="display-4">{{ news.titreNews }}</h1>
+        <h1 align="center" class="display-4 titlenews">{{ news.titreNews }}</h1>
         <br>
         <div class="row mx-auto">
             <div class="col-md-6">
@@ -23,14 +25,55 @@
             </div>
         </div>
         {% if is_granted('ROLE_ADMIN') %}
-        <a href="{{ path('modifnews', {'id': news.id}) }}">Modifier</a>
-        <a href="{{ path('deletenews', {'id': news.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ?')">Supprimer</a>
+        <br>
+        <a class="btn btn-light" href="{{ path('modifnews', {'id': news.id}) }}">Modifier</a>
+        <a class="btn btn-light" style="cursor: pointer;" data-toggle="modal" data-target="#confirm2-{{news.id}}">Supprimer</a>
+        
+        <!-- Modal -->
+
+        <div class="modal fade" id="confirm2-{{news.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Êtes-vous sûr de vouloir supprimer cette news ?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                {# <div class="modal-body">
+                ...
+                </div> #}
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <a type="button" class="btn btn-danger" href="{{ path('deletenews', {'id': news.id}) }}">Supprimer</a>
+                
+                </div>
+            </div>
+            </div>
+        </div>
         {% endif %}
+
     </div>
 
     {% else %}
     Pas d'article
     {% endfor %}
+
+    <div class="d-flex justify-content-center">
+        <ul class="pagination">
+            <li class="page-item {% if page == 1 %}disabled{% endif %}">
+            <a class="page-link" href="{{ path('actu', {'page': page - 1}) }}">&laquo;</a>
+            </li>
+            {% for i in 1..pages %}
+            <li class="page-item {% if page == i %}active{% endif %}">
+            <a class="page-link" href="{{ path('actu', {'page': i}) }}">{{ i }}</a>
+            </li>
+            {% endfor %}
+            <li class="page-item {% if page == pages %}disabled{% endif %}">
+            <a class="page-link" href="{{ path('actu', {'page': page + 1}) }}">&raquo;</a>
+            </li>
+        </ul>
+    </div>
         
 </div>
 

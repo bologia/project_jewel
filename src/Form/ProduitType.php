@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Marque;
 use App\Entity\Produit;
+use App\Entity\Materiel;
 use App\Entity\Categorie;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,6 +23,13 @@ class ProduitType extends AbstractType
                 'class'         => Categorie::class,
                 'choice_label'  => 'nomCategorie',
                 'label'         => 'Catégorie(s) du produit',
+                'multiple'      => true,
+                'mapped'        => false
+            ])
+            ->add('Materiel', EntityType::class, [
+                'class'         => Materiel::class,
+                'choice_label'  => 'nomMateriel',
+                'label'         => 'Matière(s) du produit',
                 'multiple'      => true,
                 'mapped'        => false
             ])

@@ -1,5 +1,5 @@
 h6 {
-  color: red;
+  color: ;
 }
 
 .presentation{
@@ -12,4 +12,14 @@ h6 {
 
 .sav{
   margin: 1em 5em;
+}
+
+@media (max-width:767px) {
+  .respongrey {
+    margin: 1rem;
+  }
+
+  .respongreyp {
+    padding-top: 1rem;
+  }
 }

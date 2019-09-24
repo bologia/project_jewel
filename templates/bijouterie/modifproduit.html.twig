@@ -17,10 +17,21 @@
     {{ form_widget(formproduit.nomProduit, {'attr': {'placeholder': "Nom du produit ici"}}) }}
     <br>
     <label for="">Prix du produit</label>
-    {{ form_widget(formproduit.prixProduit, {'attr': {'placeholder': "entrer le prix"}}) }}
+    {{ form_widget(formproduit.prixProduit, {'attr': {'placeholder': "Entrer le prix"}}) }}
     <br>
+    {# <label for="">Catégorie(s) du produit</label>
+    {{ form_widget(formproduit.Categorie, {'attr': {
+        'class': "categoproduit selectpicker", 'data-live-search': "true", 'data-size': "5"}}) }}
+    <br><br>
+    <label for="">Matière(s) du produit</label>
+    {{ form_widget(formproduit.Materiel, {'attr': {
+        'class': "matproduit selectpicker", 'data-live-search': "true", 'data-size': "5"}}) }}
+    <br><br>
+    <label for="">Marque du produit</label>
+    {{ form_widget(formproduit.Marque, {'attr': {'placeholder': "Entrer la marque"}}) }}
+    <br> #}
     <label for="">Description du produit</label>
-    {{ form_widget(formproduit.descriptionProduit, {'attr': {'placeholder': "une description"}}) }}
+    {{ form_widget(formproduit.descriptionProduit, {'attr': {'placeholder': "Une description"}}) }}
     
     <br><br><br>
     <center>
@@ -33,3 +44,10 @@
 <br><br>
 
 {% endblock %}
+
+{# {% block javascripts %}
+<script>
+    $('.categoproduit').selectpicker();
+    $('.matproduit').selectpicker();
+</script>
+{% endblock %} #}

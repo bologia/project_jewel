@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Panier;
 use App\Form\InscriptionType;
 use App\Repository\PanierRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,16 +56,39 @@ class SecurityController extends AbstractController
     public function deconnexion() {}
 
     /**
-     * @Route("/listecommand", name="listecommand")
+     * @Route("/listecommand/{page}", name="listecommand", requirements={"page": "\d+"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function listecommand(PanierRepository $repo) {
+    public function listecommand(PanierRepository $repo, $page = 1) {
 
-        $panierval = $repo->findAllValid(); //ceci est dans le panierrepository
+        $limite = 10;
+
+        $start = $page * $limite - $limite;
+
+        $panierval = $repo->findAllValid($limite,$start); //ceci est dans le panierrepository
+
+        $total = count($repo->findAll());
+
+        $pages = ceil($total / $limite);
 
         return $this->render('bijouterie/listecommand.html.twig', [
-            'panierval' => $panierval
+            'panierval' => $panierval,
+            'pages' => $pages,
+            'page' => $page
         ]);
     }
-    
+
+    /**
+     * @Route("/listecommand/finishedpan/{id}", name="finishedpan")
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function finishedPan(Panier $panier, ObjectManager $manager) {
+        
+        $panier->setFinishedPanier(true);
+        
+        $manager->persist($panier);
+        $manager->flush();
+
+        return $this->redirectToRoute('listecommand');
+    }
 }

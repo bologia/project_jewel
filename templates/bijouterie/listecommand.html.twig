@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
-{% block stylesheets %}<link rel="stylesheet" href="/css/actu.css">{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="/css/listecommand.css">
+{% endblock %}
+
 {% block title %}{% endblock %}
 
 {% block body %}
@@ -11,17 +15,43 @@
     <p>Liste des commandes :</p>
 
     {% for vag in panierval %}
-    <div class="my-5 bg-dark text-light">
-        <p>Commande du {{ vag.datePanier|localizeddate('none', 'none', null, null, 'EEEE d MMMM HH:mm') | capitalize }} par {{ vag.user.nomUser }} {{ vag.user.prenomUser }}</p>
-        {% for lol in vag.comportePanier %}
-            <img src="/imag/{{ lol.produit.imagProduit }}" alt="" width="100px" style="height: 100px">
-            <p>{{ lol.produit.nomProduit }} - {{ lol.produit.prixProduit }} €</p>
+    <div class="card text-black bg-light {% if vag.finishedPanier == true %} active-panier {% endif %} mb-3">
+        <div class="card-header">
+            <p>Commande du {{ vag.datePanier|localizeddate('none', 'none', null, null, 'EEEE d MMMM HH:mm') | capitalize }} par {{ vag.user.nomUser }} {{ vag.user.prenomUser }}</p>
+        </div>
+        <div class="card-body">
+        {% for lol in vag.comportePanier %} {# ya moy de faire des hr sans le dernier avec key length -1 jspaquoi #}
+        <div class="d-flex justify-content align-items-center flex-wrap my-2">
+            <img class="mx-5" src="/imag/{{ lol.produit.imagProduit }}" alt="" width="100px" style="height: 100px">
+            <p class="mx-5">{{ lol.produit.nomProduit }}</p>
+            <p class="mx-5">{{ lol.produit.prixProduit }} €</p>
+            <p class="mx-5">Quantité: {{ lol.quantite }}</p>
+        </div>
         {% endfor %}
-        <input type="checkbox" name="" id="">
+        </div>
+        {% if vag.finishedPanier == false %}
+        <div class="card-footer">
+            <center><a class="btn btn-info" href="{{ path('finishedpan', {"id": vag.id}) }}">Validation pour commande terminé.</a></center>
+        </div>
+        {% endif %}
     </div>
     {% endfor %}
 
-
+    <div class="d-flex justify-content-center">
+        <ul class="pagination">
+            <li class="page-item {% if page == 1 %}disabled{% endif %}">
+            <a class="page-link" href="{{ path('listecommand', {'page': page - 1}) }}">&laquo;</a>
+            </li>
+            {% for i in 1..pages %}
+            <li class="page-item {% if page == i %}active{% endif %}">
+            <a class="page-link" href="{{ path('listecommand', {'page': i}) }}">{{ i }}</a>
+            </li>
+            {% endfor %}
+            <li class="page-item {% if page == pages %}disabled{% endif %}">
+            <a class="page-link" href="{{ path('listecommand', {'page': page + 1}) }}">&raquo;</a>
+            </li>
+        </ul>
+    </div>
 
 </div>
 

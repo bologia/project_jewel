@@ -50,12 +50,12 @@ class PanierController extends AbstractController
             $manager->persist($panier);
             $manager->flush();
 
-            // $this->addFlash(
-            //     'success',
-            //     "Votre commande de réservation a bien été envoyée !"
-            // );
+            $this->addFlash(
+                'success2',
+                "Votre commande de réservation a bien été envoyée !"
+            );
         } 
-
+        
         return $this->redirectToRoute('panier');
     }
     
@@ -120,13 +120,35 @@ class PanierController extends AbstractController
             $comporte = new Comporte();
             $comporte->setPanier($panier)
                      ->setProduit($produit)
-                     ->setQuantite(3);
+                     ->setQuantite(1);
 
             $manager->persist($comporte);
             $manager->flush();    
         }
         
         return new JsonResponse();
+    }
+
+    /**
+     * @Route("/panier/quantite/{id}", name="quantite")
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function quantite(ObjectManager $manager, ComporteRepository $repocomp, PanierRepository $repopan) {
+
+        $user = $this->getUser();
+
+        $panier = $repopan->findOneByUser($user); //ceci est dans le panierrepository
+
+        $quant = $repocomp->findOneBy(['quantite' => $quantite]);
+
+        if($quant == 1){
+            $comporte->setQuantite($quantite);
+
+            $manager->persist($comporte);
+            $manager->flush(); 
+        }
+
+        return $this->redirectToRoute('panier');
     }
 
     /**

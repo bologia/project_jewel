@@ -10,19 +10,26 @@
     <hr>
     <a href="{{ path('modifprofil') }}">Modifier vos informations de Profil ici</a>
     <br><br>
-    <p>Votre historique de commandes:</p>
+    <p>Votre historique de commandes:</p>   
+
     {# Pour chaque panier(vag) dans la liste des paniers #}
     {% for vag in paniers %}
-    <div class="my-5 bg-dark text-light">
-        <p>Commande du {{ vag.datePanier | localizeddate('none', 'none', null, null, 'EEEE d MMMM HH:mm') | capitalize }}</p>
-        {% for lol in vag.comportePanier %} {# lol (est égal) = (vaut) vag.comportePanier #}
-            <img src="/imag/{{ lol.produit.imagProduit }}" alt="" width="100px" style="height: 100px">
-            <p>{{ lol.produit.nomProduit }} - {{ lol.produit.prixProduit }} €</p>
-        {% endfor %}
+    <div class="card text-white bg-warning mb-3">
+        <div class="card-header">
+            <p>Commande du {{ vag.datePanier | localizeddate('none', 'none', null, null, 'EEEE d MMMM HH:mm') | capitalize }}</p>
+        </div>
+        <div class="card-body">
+            {% for lol in vag.comportePanier %} {# lol (est égal) = (vaut) vag.comportePanier #}
+            <div class="d-flex justify-content align-items-center flex-wrap my-2">
+                <img class="mx-5" src="/imag/{{ lol.produit.imagProduit }}" alt="" width="100px" style="height: 100px">
+                <p class="mx-5">{{ lol.produit.nomProduit }}</p>
+                <p class="mx-5">{{ lol.produit.prixProduit }} €</p>
+                <p class="mx-5">Quantité: {{ lol.quantite }}</p>
+            </div>
+            {% endfor %}
+        </div>
     </div>
     {% endfor %}
-
-
 
 </div>
 

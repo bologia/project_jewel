@@ -9,59 +9,70 @@
     <h4>Panier</h4>
     <hr>
 
-    {% if panier is not null %}
+    {% if panier is not null and panier.comportePanier|length > 0 %}
         <h2>Vous avez {{ panier.comportePanier|length }} Produit(s) dans votre Panier</h2>
         <br>
 
         {% for lol in panier.comportePanier %}
 
-        <div class="card mb-3">
-          <div class="row no-gutters">
-            <div class="col-md-3">
-              <img src="/imag/{{ lol.produit.imagProduit }}" style="height: 150px" class="card-img" alt="...">
+        <div class="card mb-3 container">
+          <div class="d-flex align-items-center row">
+            <img src="/imag/{{ lol.produit.imagProduit }}" style="height: 250px; width:250px; object-fit:cover;" class="m-3" alt="...">
+            <div class="m-3 col">
+              <h5>{{ lol.produit.nomProduit }}</h5>
+              <strong>{{ lol.produit.prixProduit }} €</strong>
             </div>
-            <div class="col-md-5 align-self-center">
-              <div class="card-body">
-                <h5 class="card-title">{{ lol.produit.nomProduit }}</h5>
-                <p class="card-text">{{ lol.produit.prixProduit }} €</p>
-              </div>
-            </div>
-            <div class="col-md-2 align-self-center">
-              <p>benzaie ici la quantité</p>
+            <div class="m-3 col">
+              <p>Quantité:</p>
               <input type="number" name="howmuch">
             </div>
-            <div class="col-md-2 align-self-center">
-              <p class="card-text"><small class="text-muted"><a href="{{ path('deletepropan', {"id": lol.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ?')">Supprimer du Panier</a></small></p>
-            </div>
+            <a class="card-text m-3 col d-flex justify-content-center"><small class="text-muted" style="cursor:pointer;" data-toggle="modal" data-target="#confirm3-{{lol.id}}">Supprimer du Panier</small></a>
           </div>
         </div>
+        
+              <!-- Modal -->
 
-        {# <table class="table">
-          <tbody>
-            <tr class="table-warning">
-              <th scope="row"><img src="/imag/{{ lol.produit.imagProduit }}" style="width:150px; height:150px" class="card-img" alt="..."></th>
-              <td>{{ lol.produit.nomProduit }}</td>
-              <td>{{ lol.produit.prixProduit }} €</td>
-              <td><small class="text-muted"><a href="{{ path('deletepropan', {"id": lol.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ?')">Supprimer du Panier</a></small></td>
-            </tr>
-          </tbody>
-        </table> #}
+<div class="modal fade" id="confirm3-{{lol.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Êtes-vous sûr de vouloir supprimer ce produit de votre Panier ?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {# <div class="modal-body">
+        ...
+      </div> #}
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+        <a type="button" class="btn btn-warning"  href="{{ path('deletepropan', {"id": lol.id}) }}">Supprimer</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
 
         {% endfor %}
 
         <br>
         <center>
-          <a type="button" class="btn btn-success" href="{{ path('validpanier') }}">Valider le Panier de réservation</a>
+          <a class="btn btn-success" href="{{ path('validpanier') }}">Valider le Panier de réservation</a>
         </center>  
         <br><br>
 
-        {# {% for message in app.flashes('success') %}
+    {% else %}
+    <h2>Votre panier est vide</h2>
+    <br>
+    {% for message in app.flashes('success2') %}
         <div class="alert alert-success">
             {{ message }}
         </div>
-        {% endfor %} #}
+    {% endfor %}
 
     {% endif %}
+
+    
 
 </div>
 

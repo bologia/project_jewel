@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProduitRepository")
@@ -53,10 +54,22 @@ class Produit
      */
     private $comporteProduit;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Materiel", inversedBy="produits")
+     */
+    private $materiel;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $activeProduit;
+
     public function __construct()
     {
         $this->categorieProduit = new ArrayCollection();
         $this->comporteProduit = new ArrayCollection();
+        $this->materiel = new ArrayCollection();
+        $this->activeProduit = true;
     }
 
     public function getId(): ?int
@@ -179,6 +192,44 @@ class Produit
                 $comporteProduit->setProduit(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Materiel[]
+     */
+    public function getMateriel(): Collection
+    {
+        return $this->materiel;
+    }
+
+    public function addMateriel(Materiel $materiel): self
+    {
+        if (!$this->materiel->contains($materiel)) {
+            $this->materiel[] = $materiel;
+        }
+
+        return $this;
+    }
+
+    public function removeMateriel(Materiel $materiel): self
+    {
+        if ($this->materiel->contains($materiel)) {
+            $this->materiel->removeElement($materiel);
+        }
+
+        return $this;
+    }
+
+    public function getActiveProduit(): ?bool
+    {
+        return $this->activeProduit;
+    }
+
+    public function setActiveProduit(bool $activeProduit): self
+    {
+        $this->activeProduit = $activeProduit;
 
         return $this;
     }
