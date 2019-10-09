@@ -18,9 +18,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BijouterieController extends AbstractController
@@ -55,100 +57,176 @@ class BijouterieController extends AbstractController
     }
 
     /**
-     * @Route("/shop/{page}", name="shop", requirements={"page": "\d+"})
+     * @Route("/shop", name="shop")
      */
-    public function shop($page = 1, ProduitRepository $repoproduit, CategorieRepository $repocategorie, MarqueRepository $repomarq, MaterielRepository $repomat) {
+    public function shop(ProduitRepository $repoproduit, Request $request, CategorieRepository $repocategorie, MarqueRepository $repomarq, MaterielRepository $repomat) {
+        // Si on a pas fait d'AJAX, on part de 0
+        // Sinon on part de la valeur qu'on a envoyé en AJAX (offset)
+        if($request->request->get('start') == null){
+            $start = 0; 
+        } else {
+            $start = $request->request->get('start');
+        }
+        $limite = 18;
 
-        $limite = 24;
-        $start = $page * $limite - $limite;
+        // Recuperation des produits suivant la limite et le point de départ (au début 20, 0)
         $produit = $repoproduit->findBy(['activeProduit' => true], ['id' => 'DESC'], $limite, $start);
-        $total = count($repoproduit->findAll());
-        $pages = ceil($total / $limite);
 
-        $categorie = $repocategorie->findAll();
-        $marque = $repomarq->findBy([],['nomMarque' => 'asc']);
-        $materiel = $repomat->findAll();
+        // Total d'article
+        $total = count($repoproduit->findBy(['activeProduit' => true]));
+        
+        // Liste des catégories, marques et matériaux pour le filtre
+        $categorie  = $repocategorie->findAll();
+        $marque     = $repomarq->findBy([],['nomMarque' => 'asc']);
+        $materiel   = $repomat->findAll();
 
+        // Si on vient via l'AJAX
+        if ($request->isXmlHttpRequest()){
+            // On affiche les produits récupérés dans une page spécifique 
+            $render = $this->render('bijouterie/_shop-content.html.twig', [
+                // Liste des produits à afficher
+                'produits'   => $produit
+            ]);
+
+            // Response envoyé à l'AJAX
+            // Render : notre vue
+            // Size   : le nombre de produits à afficher
+            // Link   : le lien avec les GET (donc les filtres)
+            $response = [
+                'render' => $render->getContent(),
+                'size'   => sizeof($produit),
+                'limit'  => $limite,
+                'link'   => $request->getUri()
+            ];
+
+            return new JsonResponse($response);
+        }
+
+        // Affichage des 20 premiers articles, le reste se fera via l'AJAX donc on ne passera par là
         return $this->render('bijouterie/shop.html.twig', [
-            'produits' => $produit,
+            // Filtres
             'categories' => $categorie,
-            'marques' => $marque,
-            'materiaux' => $materiel,
-            'pages' => $pages,
-            'page' => $page,
-            'nombre' => $total
+            'marques'    => $marque,
+            'materiaux'  => $materiel,
+            // Total produit
+            'nombre'     => $total,
+            // Limite et point de départ
+            'limit'      => $limite,
+            'start'      => $start,
+            // Lien avec les GET (donc les filtres)
+            'link'       => $request->getUri(),
+            // Les produits à afficher
+            'produits'   => $produit
         ]);
     }
     
     /**
-     * @Route("/shop/filter/{page}", name="filter", requirements={"page": "\d+"})
+     * @Route("/shop/filter", name="filter")
      */
-    public function filter($page = 1, Request $request, CategorieRepository $repcat, ProduitRepository $repo)
+    public function filter(ProduitRepository $repoproduit, Request $request, CategorieRepository $repcat, ProduitRepository $repo)
     {
         $repomarq = $this->getDoctrine()->getRepository(Marque::class);
-        $repomat = $this->getDoctrine()->getRepository(Materiel::class);
+        $repomat  = $this->getDoctrine()->getRepository(Materiel::class);
         
+        // Liste des filtres
         $categorie = $repcat->findAll();
-        $marque = $repomarq->findBy([],['nomMarque' => 'asc']);//findAll();
-        $materiel = $repomat->findAll();
+        $marque    = $repomarq->findBy([],['nomMarque' => 'asc']);
+        $materiel  = $repomat->findAll();
 
-        $categoriesId = [];                                     // Tableau pour dire que c'est vide si il n'y a pas de filtres
-        $categories = [];                                       // Futur tableau des categories
-        $marquesId = [];                                        
-        $marques = [];
-        $materiauxId = [];                                        
-        $materiaux = [];
+        // Initialisation des filtres
+        $categoriesId = [];                                     
+        $categories   = [];                                       
+        $marquesId    = [];                                        
+        $marques      = [];
+        $materiauxId  = [];                                        
+        $materiaux    = [];
 
-        if($request->request->get('filtrecat') != null){           // on prend dans le form voir si c'est filtré
-            $categoriesId = $request->request->get('filtrecat');   // on récupère l'id des catégories (id coché)
+        // pour la page marques aller directement au shop filtré. "query" -> method get dans l'url alr qu'au dessus en request->request c'est en post
+        if($request->query->get('id') != null){                    
+            $marquesId[] = $request->query->get('id');             
+        }
+        
+        // On prends dans le form voir si c'est filtré
+        // On récupère ensuite l'id des catégories/marques/materiaux (cochés)
+        if($request->query->get('filtrecat') != null){           
+            $categoriesId = $request->query->get('filtrecat');  
         } 
-        if($request->request->get('filtremarq') != null){       
-            $marquesId = $request->request->get('filtremarq');
+        if($request->query->get('filtremarq') != null){       
+            $marquesId = $request->query->get('filtremarq');
         }
-        if($request->request->get('filtremat') != null){       
-            $materiauxId = $request->request->get('filtremat');
+        if($request->query->get('filtremat') != null){       
+            $materiauxId = $request->query->get('filtremat');
         }
-        for($i = 0 ; $i < sizeof($categoriesId) ; $i++){           // on parcours le tableau jusqu'au dernier id
-            $categories[] = $repcat->find($categoriesId[$i]);      // puis on récupère la ligne entière de la cat suivant l'id
+
+        // On récupère les catégories/marques/matériaux filtrés grâce à l'id
+        for($i = 0 ; $i < sizeof($categoriesId) ; $i++){         
+            $categories[] = $repcat->find($categoriesId[$i]);      
         }
         for($j = 0 ; $j < sizeof($marquesId) ; $j++){           
-            // if($marquesId[$j] != -1){                           // Si on a cliqué sur "tout"
-                $marques[] = $repomarq->find($marquesId[$j]);  
-            // }   
+            $marques[] = $repomarq->find($marquesId[$j]);     
         }
         for($k = 0 ; $k < sizeof($materiauxId) ; $k++){           
-                $materiaux[] = $repomat->find($materiauxId[$k]);    
+            $materiaux[] = $repomat->find($materiauxId[$k]);    
         }
-        // if(sizeof($categories) > 0 && sizeof($marques) > 0){         // c'est pour les 2 en meme tps
-        //     $produit = $repo->findByFilter3($categories, $marques);  // la fonction 3 dans le produitRepo
-        // }
-        // else if(sizeof($categories) > 0){                       // permet de ne pas être vide si rien est coché
-        //     $produit = $repo->findByFilter($categories);        // on récupère les produits suivant les catégories du filtre (ProduitRepository)
-        // }
-        // else if(sizeof($marques) > 0){
-        //     $produit = $repo->findByFiltermarq($marques);
-        // } else {
-        //     $produit = $repo->findBy(['activeProduit' => true]);     // on recupère tout(les produits activé) sinon
-        // }
 
-        $limite = 10;
-        $start = $page * $limite - $limite;
-        $produit = $repo->findByFilterAll($categories, $marques, $materiaux, $limite, $start); // fonction dans le repo
-        $total = count($repo->findByFilterCount($categories, $marques, $materiaux));
-        $pages = ceil($total / $limite);
+        // Si on a pas fait d'AJAX, on part de 0
+        // Sinon on part de la valeur qu'on a envoyé en AJAX (offset)
+        if($request->request->get('start') == null) {
+            $start = 0; 
+        } else {
+            $start = $request->request->get('start');
+        }
 
+        $limite = 18;
+
+        // Recuperation des produits suivant la limite, le point de départ (au début 20, 0)
+        // Suivant aussi les catégories, marques et matériaux cochés
+        $produit = $repo->findByFilterCount($categories, $marques, $materiaux, $limite, $start);
+        
+        // Total de produits
+        $total = count($repo->findByFilterAll($categories, $marques, $materiaux));
+        
+        // Si on vient de l'AJAX
+        if ($request->isXmlHttpRequest()){
+            // Affichage des produits
+            $render = $this->render('bijouterie/_shop-content.html.twig', [
+                // Liste des produits
+                'produits' => $produit
+            ]);
+
+            // Response envoyé à l'AJAX
+            // Render : notre vue
+            // Size   : le nombre de produits à afficher
+            // Link   : le lien avec les GET (donc les filtres)
+            $response = [
+                'render' => $render->getContent(),
+                'size'   => sizeof($produit),
+                'limit'  => $limite,
+                'link'   => $request->getUri()
+            ];
+
+            return new JsonResponse($response);
+        }
+
+        // Affichage des 20 premiers articles, le reste se fera via l'AJAX donc on ne passera par là
         return $this->render('bijouterie/shop.html.twig', [
-            'produits' => $produit,
+            // Liste des filtres
             'categories' => $categorie,
-            'lastCategories' => $categories, // Pour laisser afficher les checked
             'marques' => $marque,
-            'lastMarques' => $marques,
             'materiaux' => $materiel,
+            // Liste des filtres qu'on recoche (pour laisser les box cochées)
+            'lastCategories' => $categories,
+            'lastMarques' => $marques,
             'lastMat' => $materiaux,
-            'pages' => $pages,
-            'page' => $page,
-            'nombre' => $total
-        ]);
+            // Total de produit + lien avec les GET (donc les filtres)
+            'nombre' => $total,
+            'link'  => $request->getUri(),
+            // Limit et point de départ
+            'limit' => $limite,
+            'start' => $start,
+            // Produits à afficher
+            'produits' => $produit
+        ]);;
     }
 
     /**

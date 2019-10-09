@@ -6,12 +6,69 @@
   margin: 3%;
 }
 
+.bgshop {
+  background-image: url("/imag/jewelbackground.png");
+  /* background-attachment: fixed; */
+  background-size: cover;
+  height: 16rem;
+}
+
+.boxlo {
+  background: rgba(0, 0, 0, 0.75);
+  padding: 1%;
+  margin-top: 2.5rem;
+}
+
+.borderland {
+  color: #775433;
+  border: solid 1px;
+  /* border-radius: 10px; */
+  padding: 8px;
+}
+
+.borderland:hover {
+  text-decoration: none;
+  color: #a77446;
+}
+
+.boutonstyle {
+  color: #775433;
+  border: solid 1px ;
+  /* border-radius: 10px; */
+  padding: 4px;
+}
+
 .cardbij {
     margin: 1%;
+    border: solid 1px #926740;
 }
 
 .lolol {
     object-fit: cover;
+}
+
+.btn-lhelo {
+  color: white;
+  background-color: #775433;
+}
+
+.btn-lhelo:hover {
+  color: white;
+  background-color: #a77446;
+}
+
+.btn-lhelo:focus { 
+  /* outline: greenyellow;  */
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(179, 149, 19, 0.25)!important;
+  box-shadow: 0 0 0 0.2rem rgba(179, 149, 19, 0.25)!important;
+} 
+
+.checkbox label::before{
+  border-radius: 0px!important;
+}
+
+.checkbox input[type="checkbox"]:focus + label::before{
+  outline: none!important;
 }
 
 /* pour les boutons de paginations */

@@ -1,5 +1,17 @@
 {% extends 'base.html.twig' %}
-{% block stylesheets %}<link rel="stylesheet" href="/css/actu.css">{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="/css/actu.css">
+<style>
+  .bootaille {
+    width: 50%;
+  }
+  @media (max-width:991px) {
+    .bootaille {
+        width: 100%;
+    }
+  }
+</style>
+{% endblock %}
 {% block title %}{% endblock %}
 
 {% block body %}
@@ -20,13 +32,15 @@
             <img src="/imag/{{ lol.produit.imagProduit }}" style="height: 250px; width:250px; object-fit:cover;" class="m-3" alt="...">
             <div class="m-3 col">
               <h5>{{ lol.produit.nomProduit }}</h5>
-              <strong>{{ lol.produit.prixProduit }} €</strong>
+              <strong><span class="prix">{{ lol.produit.prixProduit }}</span> €</strong>
             </div>
             <div class="m-3 col">
               <p>Quantité:</p>
-              <input type="number" name="howmuch">
+              <input type="number" step="1" max="99" min="1" value="{{ lol.quantite }}"
+                size="1" id="encule" data-url="{{ path('quantite', {'id': lol.id}) }}">
             </div>
-            <a class="card-text m-3 col d-flex justify-content-center"><small class="text-muted" style="cursor:pointer;" data-toggle="modal" data-target="#confirm3-{{lol.id}}">Supprimer du Panier</small></a>
+            <a class="card-text m-3 col d-flex justify-content-center"><small class="text-muted"
+              style="cursor:pointer;" data-toggle="modal" data-target="#confirm3-{{lol.id}}"><i class="fas fa-trash"></i> Supprimer du Panier</small></a>
           </div>
         </div>
         
@@ -55,24 +69,39 @@
 
         {% endfor %}
 
+        <div class="card mb-3 bootaille">
+          <div class="d-flex align-items-center">
+            <div class="m-3 d-flex">
+              <h5 style="margin-bottom: 0!important;">Montant total de votre commande:</h5>
+              <strong class="ml-5"><span class="prixtotal"></span></strong>
+            </div>
+            <div class="m-3">
+              
+            </div>
+          </div>
+        </div>
         <br>
-        <center>
-          <a class="btn btn-success" href="{{ path('validpanier') }}">Valider le Panier de réservation</a>
-        </center>  
-        <br><br>
 
+        {# form pour récupérer le prix total #}
+        <form action="{{ path('validpanier') }}" name="triche" method="POST">
+          <input type="hidden" value="0" class="postprix" name="postprix"></input>
+          <center>
+            <button type="submit" class="btn btn-success">Valider le Panier de réservation</button>
+          </center>  
+        </form>
+        <br><br><br>
+      
     {% else %}
+    
     <h2>Votre panier est vide</h2>
     <br>
-    {% for message in app.flashes('success2') %}
-        <div class="alert alert-success">
-            {{ message }}
-        </div>
-    {% endfor %}
+      {% for message in app.flashes('success2') %}
+          <div class="alert alert-success">
+              {{ message }}
+          </div>
+      {% endfor %}
 
     {% endif %}
-
-    
 
 </div>
 

@@ -1,12 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
+        <title>L'Heure et L'Or</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1"> {# pour que fils de pute de responsive marche vraiment lol enculé #}
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta name="description" content="L'heure et L'or, bijouterie des Ardennes depuis plus de 30 ans, commande 
+        les produits que vous voulez sur catalogue et répare vos montres et bijoux dans la journée où vous l'amenez."/> {# c'est la description sous les recherches google #}
+        <meta name="keywords" content="bijouterie, horlogerie, l'heure et l'or, montre, bijou, bague, bracelet, collier, or, réparation"/> {# mots clés #}
+        <meta name="author" content="L'heureetL'or-Team"/> {# auteur du site #}
+        <meta property="og:title" content="L'Heure et L'Or"/> {# og pleins de trucs #}
+        <meta property="og:description" content="Site internet officiel de L'Heure et L'Or"/>
+        <meta property="og:locale" content="fr_FR"/>
+        <meta property="og:site_name" content="l'Heureetl'Or"/>
+        {# <meta property="og:image" content="{{ asset('images/logo-artisanatweb.png') }}" />
+        <meta property="og:image:alt" content="Logo de ArtisanatWeb" />
+        <meta property="og:url" content="http://www.artisanatweb.fr" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="theme-color" content="#17141f"/>
+        <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}" />
+        <!-- icone pour jeremy ne sait plus -->
+        <link rel="icon" sizes="192x192" href="{{ asset('images/icon.png') }}">
+        <!-- Icone pour Safari Safari -->
+        <link rel="apple-touch-icon" href="{{ asset('images/icon.png') }}">
+        <!-- multiple icones pour IE -->
+        <meta name="msapplication-square310x310logo" content="{{ asset('images/icon.png') }}"> #}
+
         <link rel="stylesheet" href="https://bootswatch.com/4/cosmo/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
         <link rel="stylesheet" href="/css/base.css">
 
         {% block stylesheets %}{% endblock %}
@@ -26,8 +48,8 @@
           </div>
       </div> #}
 
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="{{ path('home') }}">L'Heure et L'Or</a>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark lole">
+            <a class="navbar-brand" href="{{ path('home') }}"><img class="what" src="/imag/HEUREetlOR152-page-.png" alt="" width="250px" height="30px"></a>
             <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>-->
@@ -73,7 +95,7 @@
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Panel Admin
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color:#373a3c">
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color:white">
                     <a class="nav-link adminavclr" href="{{ path('ajoutnews') }}">Ajouter une News</a>
                     <a class="nav-link adminavclr" href="{{ path('ajoutproduit') }}">Ajouter un Produit</a>
                     <a class="nav-link adminavclr" href="{{ path('listecommand') }}">Liste des commandes</a>

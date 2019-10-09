@@ -33,6 +33,10 @@ class Comporte
      */
     private $panier;
 
+    public function __contruct() {
+        $this->quantite = 1;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

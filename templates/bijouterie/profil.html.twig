@@ -1,5 +1,18 @@
 {% extends 'base.html.twig' %}
-{% block stylesheets %}<link rel="stylesheet" href="/css/actu.css">{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="/css/.css">
+<style>
+    .bgorcl {
+        background-color: #eecd97;
+    }
+
+    /* @media (max-width:991px) {
+        .tast {
+            margin: 0;
+        }
+    } */
+</style>
+{% endblock %}
 {% block title %}{% endblock %}
 
 {% block body %}
@@ -14,19 +27,23 @@
 
     {# Pour chaque panier(vag) dans la liste des paniers #}
     {% for vag in paniers %}
-    <div class="card text-white bg-warning mb-3">
-        <div class="card-header">
+    <div class="card text-black bg-white mb-3">
+        <div class="card-header bgorcl">
             <p>Commande du {{ vag.datePanier | localizeddate('none', 'none', null, null, 'EEEE d MMMM HH:mm') | capitalize }}</p>
         </div>
         <div class="card-body">
-            {% for lol in vag.comportePanier %} {# lol (est égal) = (vaut) vag.comportePanier #}
+            {% for lol in vag.comportePanier %} {# lol(c'est (produits) pour mieux comprendre) (est égal) = (vaut) vag.comportePanier #}
             <div class="d-flex justify-content align-items-center flex-wrap my-2">
-                <img class="mx-5" src="/imag/{{ lol.produit.imagProduit }}" alt="" width="100px" style="height: 100px">
+                <img class="mx-5" src="/imag/{{ lol.produit.imagProduit }}" alt="" width="100px" style="height: 100px; object-fit: cover;">
                 <p class="mx-5">{{ lol.produit.nomProduit }}</p>
                 <p class="mx-5">{{ lol.produit.prixProduit }} €</p>
                 <p class="mx-5">Quantité: {{ lol.quantite }}</p>
             </div>
             {% endfor %}
+        </div>
+        <div class="card-footer d-flex justify-content align-items-center">
+            <p class="mb-0">Montant total de la commande: </p>
+            <p class="mb-0 ml-5">{{ vag.prixTotal }}</p>
         </div>
     </div>
     {% endfor %}

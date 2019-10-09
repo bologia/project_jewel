@@ -38,6 +38,11 @@ class Panier
      */
     private $finishedPanier;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $prix_total;
+
     public function __construct()
     {
         $this->comportePanier = new ArrayCollection();
@@ -112,6 +117,18 @@ class Panier
     public function setFinishedPanier(bool $finishedPanier): self
     {
         $this->finishedPanier = $finishedPanier;
+
+        return $this;
+    }
+
+    public function getPrixTotal(): ?float
+    {
+        return $this->prix_total;
+    }
+
+    public function setPrixTotal(float $prix_total): self
+    {
+        $this->prix_total = $prix_total;
 
         return $this;
     }

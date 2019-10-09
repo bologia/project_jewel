@@ -22,12 +22,16 @@
         <div class="card-body">
         {% for lol in vag.comportePanier %} {# ya moy de faire des hr sans le dernier avec key length -1 jspaquoi #}
         <div class="d-flex justify-content align-items-center flex-wrap my-2">
-            <img class="mx-5" src="/imag/{{ lol.produit.imagProduit }}" alt="" width="100px" style="height: 100px">
+            <img class="mx-5" src="/imag/{{ lol.produit.imagProduit }}" alt="" width="100px" style="height: 100px; object-fit: cover;">
             <p class="mx-5">{{ lol.produit.nomProduit }}</p>
             <p class="mx-5">{{ lol.produit.prixProduit }} €</p>
             <p class="mx-5">Quantité: {{ lol.quantite }}</p>
         </div>
         {% endfor %}
+        </div>
+        <div class="card-footer d-flex justify-content align-items-center">
+            <p class="mb-0">Montant total de la commande: </p>
+            <p class="mb-0 ml-5">{{ vag.prixTotal }}</p>
         </div>
         {% if vag.finishedPanier == false %}
         <div class="card-footer">

@@ -33,7 +33,12 @@ class SecurityController extends AbstractController
             $manager->persist($user);
             $manager->flush();
 
-            return $this->redirectToRoute('connexion');
+            $this->addFlash(
+                'success3',
+                "Vous êtes désormais inscrit(e) ! À présent, "
+            );
+
+            return $this->redirectToRoute('inscription');
         }
 
         return $this->render('bijouterie/inscription.html.twig', [
@@ -64,6 +69,8 @@ class SecurityController extends AbstractController
         $limite = 10;
 
         $start = $page * $limite - $limite;
+        // 1 * 10 = 10 - 10 = 0
+        // 2 * 10 = 20 - 10 = 10
 
         $panierval = $repo->findAllValid($limite,$start); //ceci est dans le panierrepository
 

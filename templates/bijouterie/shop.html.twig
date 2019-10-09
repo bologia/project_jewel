@@ -2,18 +2,27 @@
 {% block stylesheets %}
 <link rel="stylesheet" href="/css/shop.css">
 <link rel="stylesheet" href="/css/awesome-bootstrap-checkbox.css">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 {% endblock %}
 {% block title %}{% endblock %}
 
 {% block body %}
-<div class="container">
-  <br>
-  <h1>Boutique de réservations</h1>
-  <h5>Vous pouvez commander vos articles pour les réserver puis ensuite venir les chercher directement à la boutique :)</h5>
+<div class="bgshop">
+  <div class="container">
+    <br>
+    <div class="boxlo">
+      <h1 style="color: white">Boutique de réservations</h1>
+      <h5 style="color: white">Vous pouvez commander vos articles pour les réserver puis ensuite venir les chercher directement à la boutique :)</h5>
+    </div>
+  </div>
 </div>
-<hr>
-<h5 class="ml-3"><strong style="text-decoration: underline;">Filtrer vos recherches:</strong></h5>
+<br>
+<center><h3 class="ml-3 mt-3">
+  <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" 
+  aria-controls="collapseExample" class="borderland">Filtrez vos recherches<i class="ml-3 fas fa-caret-down"></i></a>
+</h3></center>
+<br>
+<div class="collapse" id="collapseExample">
+<h5 class="m-3"><strong class="boutonstyle">Filtrez par types:</strong></h5>
 
 <!--c'était la navbar stylé-->
 
@@ -74,7 +83,7 @@
   </div> 
 </div> #}
 
-<form action="{{ path('filter') }}" name="filtres" method="POST">
+<form action="{{ path('filter') }}" name="filtres" method="GET">
   <div class="d-flex flex-wrap">  
     {# {% for key, mdr in categories|slice(0,12) %} ici c'était pour tricher avec les matériaux avant #}
     {% for mdr in categories %}
@@ -98,7 +107,7 @@
     {# {% for key, mdr in categories %}
       {% if key > 11 %} ici la suite de l'ancienne triche materiaux #}  
 
-  <h5 class="ml-3"><strong style="text-decoration: underline;">Filtrer par marques:</strong></h5>
+  <h5 class="m-3"><strong class="boutonstyle">Filtrez par marques:</strong></h5>
 
   <div class="d-flex flex-wrap">
     {% for mdr in marques %}
@@ -119,7 +128,7 @@
     {% endfor %}
   </div>
 
-  <h5 class="ml-3"><strong style="text-decoration: underline;">Filtrer par matières:</strong></h5>
+  <h5 class="m-3"><strong class="boutonstyle">Filtrez par matières:</strong></h5>
 
   <div class="d-flex flex-wrap">
     {% for mdr in materiaux %}
@@ -140,20 +149,24 @@
     {% endfor %}
   </div>
   
-  <center><button type="submit" class="btn btn-warning">Valider</button></center>
+  <center><button type="submit" class="btn btn-lhelo">Valider</button></center>
   
 </form>
+
+</div>
   
 <hr>
     
 <p class="px-3">
+  
   <b>{{ nombre }}</b> résultats trouvés
+
 </p>
 
     <div class="proticles">
         {% for produit in produits %}
 
-        <div class="card border-warning mb-3 cardbij" style="width: 25rem; height: 660px">
+        <div class="card mb-3 cardbij" style="width: 25rem; height: 630px">
             <div class="card-header">{{ produit.nomProduit }}</div>
             <div class="card-body" style="height: 600px; overflow: auto;">
             {% for categbadg in produit.categorieProduit %}
@@ -166,11 +179,14 @@
             {% if produit.marque is not null %}
             <span class="badge badge-info">{{ produit.marque.nomMarque }}</span>
             {% endif %}
-            <p align="center">{{ produit.prixProduit }} €</p>
+            <p align="center"><strong>{{ produit.prixProduit }} €</strong></p>
             <p class="card-text">{{ produit.descriptionProduit }}</p>
             </div>
             <div class="card-footer">
-            {% if app.user %}
+            {% if not app.user %}
+            <center><a href="{{ path('inscription') }}" class="btn btn-secondary">Ajouter au Panier</a></center>
+            {% else %}
+
             {% if app.user.ajoutPan(produit) %}
             <center><button data-url="{{ path('deletpropan', {'id': produit.id}) }}" class="btn btn-danger deletpropan">Retirer du Panier</button></center>
             <center class="d-none"><button data-url="{{ path('ajouter_produit', {'id': produit.id}) }}" class="btn btn-secondary ajoutpan">Ajouter au Panier</button></center>
@@ -180,7 +196,9 @@
             <center class="d-none"><button data-url="{{ path('deletpropan', {'id': produit.id}) }}" class="btn btn-danger deletpropan">Retirer du Panier</button></center>
             
             {% endif %}
+
             {% endif %}
+
             {% if is_granted('ROLE_ADMIN') %}
             <br>
             <a class="btn btn-light" style="border: 1px solid rgba(0, 0, 0, 0.15)" href="{{ path('modifproduit', {'id': produit.id}) }}">Modifier</a>
@@ -218,27 +236,20 @@
         {% endfor %}
 
     </div>
-    {% if lastCategories is defined and lastMarques is defined and lastMat is defined %}
-      
 
-
+    {# NOTRE BUTTON DE OUF #}
+    {# Si le nombre est supérieur à la limite alors on doit pouvoir en voir + #}
+    {% if nombre > limit %}
+    {# Triche pour mettre à jour la limite #}
+    <input type="hidden" id="produits-page" value="{{limit}}" >
+    {# Lien où on doit aller (shop ou filtre) - Button pour l'AJAX #}
+    <center><button class="btn btn-lhelo" id="voirplus" data-url="{{ link }}">Voir plus...</button></center>
+    <br><br>
     {% endif %}
-    <div class="d-flex justify-content-center">
-        <ul class="pagination">
-            <li class="page-item {% if page == 1 %}disabled{% endif %}">
-            <a class="page-link" href="{{ path('shop', {'page': page - 1}) }}">&laquo;</a>
-            </li>
-            {% for i in 1..pages %}
-            <li class="page-item {% if page == i %}active{% endif %}">
-            <a class="page-link" href="{{ path('shop', {'page': i}) }}">{{ i }}</a>
-            </li>
-            {% endfor %}
-            <li class="page-item {% if page == pages %}disabled{% endif %}">
-            <a class="page-link" href="{{ path('shop', {'page': page + 1}) }}">&raquo;</a>
-            </li>
-        </ul>
-    </div>
 
-
+{# {% block javascripts %}
+    <script>
+    </script>
+{% endblock %} #}
    
 {% endblock %}

@@ -22,13 +22,105 @@ class ProduitRepository extends ServiceEntityRepository
     // /**
     //  * @return Produit[] Returns an array of Produit objects
     //  */
-
-    public function findByFilterAll($categories = null, $marques = null, $materiaux = null, $limite, $start)
+    
+    public function findByFilterAll($categories = null, $marques = null, $materiaux = null) 
     {        
         $catOk = ($categories != null && sizeof($categories) > 0);
         $marqOk = ($marques != null && sizeof($marques) > 0);
         $matOk = ($materiaux != null && sizeof($materiaux) > 0);
 
+        if($catOk && $marqOk && $matOk){
+            return $this->createQueryBuilder('p')
+                        ->join('p.categorieProduit','c')
+                        ->join('p.marque','m')
+                        ->join('p.materiel','ma')
+                        ->andWhere("c.id IN(:cat)")
+                        ->andWhere("m.id IN(:marq)")
+                        ->andWhere("ma.id IN(:mat)")
+                        ->andWhere("p.activeProduit = true")
+                        ->setParameters([
+                            'marq' => array_values($marques),
+                            'cat' => array_values($categories),
+                            'mat' => array_values($materiaux)
+                        ])
+                        ->getQuery()
+                        ->getResult();
+        } else if($catOk && $marqOk){
+            return $this->createQueryBuilder('p')
+                        ->join('p.categorieProduit','c')
+                        ->join('p.marque','m')                        
+                        ->andWhere("c.id IN(:cat)")
+                        ->andWhere("m.id IN(:marq)")                        
+                        ->andWhere("p.activeProduit = true")
+                        ->setParameters([
+                            'marq' => array_values($marques),
+                            'cat' => array_values($categories)                            
+                        ])
+                        ->getQuery()
+                        ->getResult();
+        } else if($catOk && $matOk){
+            return $this->createQueryBuilder('p')
+                        ->join('p.categorieProduit','c')                        
+                        ->join('p.materiel','ma')
+                        ->andWhere("c.id IN(:cat)")                        
+                        ->andWhere("ma.id IN(:mat)")
+                        ->andWhere("p.activeProduit = true")
+                        ->setParameters([                            
+                            'cat' => array_values($categories),
+                            'mat' => array_values($materiaux)
+                        ])
+                        ->getQuery()
+                        ->getResult();
+        } else if($marqOk && $matOk){
+            return $this->createQueryBuilder('p')                        
+                        ->join('p.marque','m')
+                        ->join('p.materiel','ma')                        
+                        ->andWhere("m.id IN(:marq)")
+                        ->andWhere("ma.id IN(:mat)")
+                        ->andWhere("p.activeProduit = true")
+                        ->setParameters([
+                            'marq' => array_values($marques),                            
+                            'mat' => array_values($materiaux)
+                        ])
+                        ->getQuery()
+                        ->getResult();
+        } else if($catOk){
+            return $this->createQueryBuilder('p')
+                        ->join('p.categorieProduit','c')
+                        ->andWhere("c.id IN(:cat)")
+                        ->andWhere("p.activeProduit = true")
+                        ->setParameter('cat' , array_values($categories))
+                        ->getQuery()
+                        ->getResult();
+        } else if($marqOk){
+            return $this->createQueryBuilder('p')
+                        ->join('p.marque','m')
+                        ->andWhere("m.id IN(:marq)")
+                        ->andWhere("p.activeProduit = true")
+                        ->setParameter('marq' , array_values($marques))
+                        ->getQuery()
+                        ->getResult();
+        } else if($matOk){
+            return $this->createQueryBuilder('p')
+                        ->join('p.materiel','ma')
+                        ->andWhere("ma.id IN(:mat)")
+                        ->andWhere("p.activeProduit = true")
+                        ->setParameter('mat' , array_values($materiaux))
+                        ->getQuery()
+                        ->getResult();
+        } else { 
+            return $this->createQueryBuilder('p')
+                        ->andWhere("p.activeProduit = true")
+                        ->getQuery()
+                        ->getResult();
+        }
+    }
+
+    public function findByFilterCount($categories = null, $marques = null, $materiaux = null, $limite, $start)
+    {        
+        $catOk = ($categories != null && sizeof($categories) > 0);
+        $marqOk = ($marques != null && sizeof($marques) > 0);
+        $matOk = ($materiaux != null && sizeof($materiaux) > 0);
         if($catOk && $marqOk && $matOk){
             return $this->createQueryBuilder('p')
                         ->join('p.categorieProduit','c')
@@ -135,101 +227,6 @@ class ProduitRepository extends ServiceEntityRepository
                         ->orderBy('p.id', 'DESC')
                         ->setFirstResult($start)
                         ->setMaxResults($limite)
-                        ->getQuery()
-                        ->getResult();
-        }
-    }
-
-    // ici c'est du recopiage pour la pagination
-    
-    public function findByFilterCount($categories = null, $marques = null, $materiaux = null) 
-    {        
-        $catOk = ($categories != null && sizeof($categories) > 0);
-        $marqOk = ($marques != null && sizeof($marques) > 0);
-        $matOk = ($materiaux != null && sizeof($materiaux) > 0);
-
-        if($catOk && $marqOk && $matOk){
-            return $this->createQueryBuilder('p')
-                        ->join('p.categorieProduit','c')
-                        ->join('p.marque','m')
-                        ->join('p.materiel','ma')
-                        ->andWhere("c.id IN(:cat)")
-                        ->andWhere("m.id IN(:marq)")
-                        ->andWhere("ma.id IN(:mat)")
-                        ->andWhere("p.activeProduit = true")
-                        ->setParameters([
-                            'marq' => array_values($marques),
-                            'cat' => array_values($categories),
-                            'mat' => array_values($materiaux)
-                        ])
-                        ->getQuery()
-                        ->getResult();
-        } else if($catOk && $marqOk){
-            return $this->createQueryBuilder('p')
-                        ->join('p.categorieProduit','c')
-                        ->join('p.marque','m')                        
-                        ->andWhere("c.id IN(:cat)")
-                        ->andWhere("m.id IN(:marq)")                        
-                        ->andWhere("p.activeProduit = true")
-                        ->setParameters([
-                            'marq' => array_values($marques),
-                            'cat' => array_values($categories)                            
-                        ])
-                        ->getQuery()
-                        ->getResult();
-        } else if($catOk && $matOk){
-            return $this->createQueryBuilder('p')
-                        ->join('p.categorieProduit','c')                        
-                        ->join('p.materiel','ma')
-                        ->andWhere("c.id IN(:cat)")                        
-                        ->andWhere("ma.id IN(:mat)")
-                        ->andWhere("p.activeProduit = true")
-                        ->setParameters([                            
-                            'cat' => array_values($categories),
-                            'mat' => array_values($materiaux)
-                        ])
-                        ->getQuery()
-                        ->getResult();
-        } else if($marqOk && $matOk){
-            return $this->createQueryBuilder('p')                        
-                        ->join('p.marque','m')
-                        ->join('p.materiel','ma')                        
-                        ->andWhere("m.id IN(:marq)")
-                        ->andWhere("ma.id IN(:mat)")
-                        ->andWhere("p.activeProduit = true")
-                        ->setParameters([
-                            'marq' => array_values($marques),                            
-                            'mat' => array_values($materiaux)
-                        ])
-                        ->getQuery()
-                        ->getResult();
-        } else if($catOk){
-            return $this->createQueryBuilder('p')
-                        ->join('p.categorieProduit','c')
-                        ->andWhere("c.id IN(:cat)")
-                        ->andWhere("p.activeProduit = true")
-                        ->setParameter('cat' , array_values($categories))
-                        ->getQuery()
-                        ->getResult();
-        } else if($marqOk){
-            return $this->createQueryBuilder('p')
-                        ->join('p.marque','m')
-                        ->andWhere("m.id IN(:marq)")
-                        ->andWhere("p.activeProduit = true")
-                        ->setParameter('marq' , array_values($marques))
-                        ->getQuery()
-                        ->getResult();
-        } else if($matOk){
-            return $this->createQueryBuilder('p')
-                        ->join('p.materiel','ma')
-                        ->andWhere("ma.id IN(:mat)")
-                        ->andWhere("p.activeProduit = true")
-                        ->setParameter('mat' , array_values($materiaux))
-                        ->getQuery()
-                        ->getResult();
-        } else { 
-            return $this->createQueryBuilder('p')
-                        ->andWhere("p.activeProduit = true")
                         ->getQuery()
                         ->getResult();
         }

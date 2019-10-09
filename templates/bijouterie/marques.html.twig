@@ -6,42 +6,43 @@
 {% block body %}
 
 <div class="container">
-
+    <br>
     <h1>Découvrez nos Marques<h1>
-        {# <h5>Bijoux</h5> #}
-        <hr>
-        <br>
-        <div class="row">
-        {% for xd in marque %}
-            <div class="col-3"><a href="{{ path('filter') }}"><img src="imag/{{ xd.logoMarque }}" alt="" width="100%"></a></div>
-        {% endfor %}
-        </div>
-        {# <div class="row">
-            <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
-            <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
-            <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
-            <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
-            <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
-            <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
-        </div>          
+    <h5>Cliquez sur une marque pour voir tous les produits ! :)</h5>
+    {# <h5>Bijoux</h5> #}
+    <hr>
+    <br>
+    <div class="row">
+    {% for xd in marque %}
+        <div class="col-3"><a href="{{ path('filter') }}?id={{ xd.id }}"><img src="imag/{{ xd.logoMarque }}" alt="" width="100%"></a></div>
+    {% endfor %}
+    </div>
+    {# <div class="row">
+        <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
+        <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
+        <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
+        <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
+        <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
+        <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
+    </div>          
 
-        <h5>Montres</h5>
-        <hr>
-        <div class="row">
-            <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
-            <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
-            <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
-            <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
-            <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
-            <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
-        </div>       #}
-            
+    <h5>Montres</h5>
+    <hr>
+    <div class="row">
+        <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
+        <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
+        <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
+        <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
+        <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
+        <div class="col-3"><a href=""><img src="imag/logo-festina.jpg" alt="" width="100%"></a></div>
+    </div>       #}
+      
 </div>
 <br>
 

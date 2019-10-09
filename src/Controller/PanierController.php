@@ -39,14 +39,16 @@ class PanierController extends AbstractController
      * @Route("/panier/validpanier", name="validpanier")
      * @Security("is_granted('ROLE_USER')")
      */
-    public function validPanier(PanierRepository $repopan, ObjectManager $manager) {
+    public function validPanier(PanierRepository $repopan, ObjectManager $manager, Request $request) {
+
+        $prix_total = (float)$request->request->get('postprix');  // la triche du form
 
         $user = $this->getUser();
         $panier = $repopan->findOneByUser($user); //ceci est dans le panierrepository
         
         if($panier != null){
             $panier->setDatePanier(new \DateTime('now', new \DateTimeZone("Europe/Paris")));
-
+            $panier->setPrixTotal($prix_total);
             $manager->persist($panier);
             $manager->flush();
 
@@ -133,24 +135,19 @@ class PanierController extends AbstractController
      * @Route("/panier/quantite/{id}", name="quantite")
      * @Security("is_granted('ROLE_USER')")
      */
-    public function quantite(ObjectManager $manager, ComporteRepository $repocomp, PanierRepository $repopan) {
+    public function quantite(Comporte $comporte, ObjectManager $manager, Request $request) {
 
-        $user = $this->getUser();
+        $quantite = $request->request->get('qte');
 
-        $panier = $repopan->findOneByUser($user); //ceci est dans le panierrepository
-
-        $quant = $repocomp->findOneBy(['quantite' => $quantite]);
-
-        if($quant == 1){
+        if($comporte != null && $quantite != null && $quantite > 0){
             $comporte->setQuantite($quantite);
-
             $manager->persist($comporte);
-            $manager->flush(); 
+            $manager->flush();
         }
 
-        return $this->redirectToRoute('panier');
+        return new JsonResponse();
     }
-
+    
     /**
      * @Route("/panier/deletpropan/{id}", name="deletpropan")
      * @Security("is_granted('ROLE_USER')")
@@ -167,7 +164,7 @@ class PanierController extends AbstractController
             $manager->remove($compo);
             $manager->flush();
         }
-
+        //ce deletpropan c'est pour le shop en ajax [retirer du panier]
         return new JsonResponse();
     }
 

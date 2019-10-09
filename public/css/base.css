@@ -13,7 +13,7 @@ button.navbar-toggler {
 }
 
 .navbar-dark .navbar-toggler {
-  border-color: #373a3c;
+  border-color: white;
 }
 
 .animated-icon1 {
@@ -51,7 +51,7 @@ transition: .25s ease-in-out;
 }
 
 .animated-icon1 span {
-background: white;
+background: #734D29;
 }
 
 .animated-icon1 span:nth-child(1) {
@@ -96,32 +96,42 @@ transform: rotate(-135deg);
 /* Footer */
 
 footer {
-  background-color: #fad25a; #FFAB0A; #373a3c;
+  background-color: #fad25a;
 }
 
 .lienn {
-  text-decoration: ;
   color: rgba(187, 122, 3, 0.87);
 }
 
-/* couleur des boutons de la nav */
+.lienn:hover {
+  color: rgba(97, 63, 1, 0.87);
+}
+
+/* couleur nav */
 
 .navbar-nav .nav-link {
-  color: white!important;
+  color: #734D29!important;
 }
 
 .navbar-nav .nav-link:hover {
-  color: coral!important;
+  color: #e09c5c!important;
+}
+
+.lole {
+  background-color: white!important;
+  border-bottom: solid 1px #775433!important; 
 }
 
 /* pour le dropdown admin */
 
 .adminavclr:hover {
-  color: coral!important;
+  color: #e09c5c!important;
 }
 
 @media (max-width:991px) {
     .dropdown-menu {
         text-align: center;
+        border-right: none;
+        border-left: none;
     }
 }

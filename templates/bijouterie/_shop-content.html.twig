@@ -1,0 +1,66 @@
+{% for produit in produits %}
+<div class="card mb-3 cardbij" style="width: 25rem; height: 660px">
+    <div class="card-header">{{ produit.nomProduit }}</div>
+    <div class="card-body" style="height: 600px; overflow: auto;">
+    {% for categbadg in produit.categorieProduit %}
+    <span class="badge badge-danger">{{ categbadg.nomCategorie }}</span>
+    {% endfor %}
+    {% for matbadg in produit.materiel %}
+    <span class="badge badge-warning">{{ matbadg.nomMateriel }}</span>
+    {% endfor %}
+    <img src="/imag/{{ produit.imagProduit }}" alt="" class="lolol" width="100%" style="height: 324px">
+    {% if produit.marque is not null %}
+    <span class="badge badge-info">{{ produit.marque.nomMarque }}</span>
+    {% endif %}
+    <p align="center"><strong>{{ produit.prixProduit }} €</strong></p>
+    <p class="card-text">{{ produit.descriptionProduit }}</p>
+    </div>
+    <div class="card-footer">
+    {% if not app.user %}
+    <center><a href="{{ path('inscription') }}" class="btn btn-secondary">Ajouter au Panier</a></center>
+    {% else %}
+
+    {% if app.user.ajoutPan(produit) %}
+    <center><button data-url="{{ path('deletpropan', {'id': produit.id}) }}" class="btn btn-danger deletpropan">Retirer du Panier</button></center>
+    <center class="d-none"><button data-url="{{ path('ajouter_produit', {'id': produit.id}) }}" class="btn btn-secondary ajoutpan">Ajouter au Panier</button></center>
+    
+    {% else %}
+    <center><button data-url="{{ path('ajouter_produit', {'id': produit.id}) }}" class="btn btn-secondary ajoutpan">Ajouter au Panier</button></center>
+    <center class="d-none"><button data-url="{{ path('deletpropan', {'id': produit.id}) }}" class="btn btn-danger deletpropan">Retirer du Panier</button></center>
+    
+    {% endif %}
+
+    {% endif %}
+
+    {% if is_granted('ROLE_ADMIN') %}
+    <br>
+    <a class="btn btn-light" style="border: 1px solid rgba(0, 0, 0, 0.15)" href="{{ path('modifproduit', {'id': produit.id}) }}">Modifier</a>
+    <a class="btn btn-light" style="cursor: pointer; border: 1px solid rgba(0, 0, 0, 0.15)" data-toggle="modal" data-target="#confirm-{{produit.id}}">Supprimer</a>
+
+      <!-- Modal -->
+
+<div class="modal fade" id="confirm-{{produit.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="exampleModalLabel">Êtes-vous sûr de vouloir supprimer ce produit ?</h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+  <span aria-hidden="true">&times;</span>
+</button>
+</div>
+{# <div class="modal-body">
+...
+</div> #}
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+<a type="button" class="btn btn-danger" href="{{ path('deleteproduit', {'id': produit.id}) }}">Supprimer</a>
+
+</div>
+</div>
+</div>
+</div>
+
+    {% endif %}
+    </div>
+</div>
+{% endfor %}

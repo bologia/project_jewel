@@ -1,15 +1,156 @@
 {% extends 'base.html.twig' %}
-{% block stylesheets %}<link rel="stylesheet" href="/css/actu.css">{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="/css/actu.css">
+<style>
+  .btn-lhelo {
+    background-color: #775433;
+  }
+
+  .btn-lhelo:hover {
+    background-color: #a77446;
+    cursor: pointer;
+  }
+</style>
+{% endblock %}
 {% block title %}{% endblock %}
 
 {% block body %}
 
 <div class="container">
     <br>
-    <h3>Contactez nous</h3>
+    <h1>Contactez nous</h1>
+    <hr>
 
-    
+    {# <form action="{{ path('contact') }}" method="">
+        <div class="form-group">
+            <label for="">Votre Nom</label>
+            <input class="form-control" required name="nom" type="">
+        </div>
+        <div class="form-group">
+            <label for="">Votre adresse email</label>
+            <input class="form-control" required name="email" type="email">
+        </div>
+        <div class="form-group">
+            <label for="">Le sujet</label>
+            <input class="form-control" required name="sujet" type="">
+        </div>
+        <div class="form-group">
+            <label for="">Votre message</label>
+            <input class="form-control" required name="message" type="textarea">
+        </div>
+        <br>
+        <center>
+        <button type="submit" class="btn btn-warning">Envoyer</button>
+        </center>
+        <br>
+    </form> #}
+
+<!--Section: Contact v.2-->
+<section class="mb-4">
+
+    <!--Section description-->
+    <br>
+    <h4 class="text-center w-responsive mx-auto mb-5">Vous avez une question, une commande, un problème ou une réparation à faire ? N'hésitez pas nous contacter !</h4>
+    <br>
+    <div class="row">
+
+        <!--Grid column-->
+        <div class="col-md-9 mb-md-0 mb-5">
+            <form id="contact-form" name="contact-form" action="" method="">
+
+                <!--Grid row-->
+                <div class="row">
+
+                    <!--Grid column-->
+                    <div class="col-md-6">
+                        <div class="md-form mb-0">
+                            <label for="name" class="">Votre nom</label>
+                            <input type="text" id="name" name="name" class="form-control">
+                        </div>
+                    </div>
+                    <!--Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-md-6">
+                        <div class="md-form mb-0">
+                            <label for="email" class="">Votre email</label>
+                            <input type="text" id="email" name="email" class="form-control">
+                        </div>
+                    </div>
+                    <!--Grid column-->
+
+                </div>
+                <!--Grid row-->
+                <br>
+                <!--Grid row-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="md-form mb-0">
+                            <label for="subject" class="">Le sujet</label>
+                            <input type="text" id="subject" name="subject" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <!--Grid row-->
+                <br>
+                <!--Grid row-->
+                <div class="row">
+
+                    <!--Grid column-->
+                    <div class="col-md-12">
+
+                        <div class="md-form">
+                            <label for="message">Votre message</label>
+                            <textarea type="text" id="message" name="message" rows="6" class="form-control md-textarea"></textarea>
+                        </div>
+
+                    </div>
+                </div>
+                <!--Grid row-->
+
+            </form>
+            <br><br>
+            <div class="text-center text-md-left">
+                <center><a class="btn btn-lhelo text-white">Envoyer</a></center>
+            </div>
+            <div class="status"></div>
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-md-3 text-center">
+            <ul class="list-unstyled mb-0">
+                <li>
+                    <p style="text-decoration: underline">Nos coordonnées:</p>
+                </li>
+                <br>
+                <li>
+                    {# <i class="fas fa-map-marker-alt fa-2x"></i> #}
+                    <p>50 Cours Aristide Briand 08000 Charleville-Mézières</p>
+                </li>
+                <br><br>
+                <li>
+                    {# <i class="fas fa-phone mt-4 fa-2x"></i> #}
+                    <p>01 23 45 67 89</p>
+                </li>
+                <br><br>
+                <li>
+                    {# <i class="fas fa-envelope mt-4 fa-2x"></i> #}
+                    <p>contact@info.com</p>
+                </li>
+            </ul>
+        </div>
+        <!--Grid column-->
+
+    </div>
+
+</section>
+<!--Section: Contact v.2-->
         
+</div>
+<br><hr width="55%"><br>
+<div>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2576.9616722626542!2d4.719338051137977!3d49.76797793262699!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47ea0e05eb1ca0d3%3A0x3ed720b7b7dd3304!2s50%20Cours%20Briand%2C%2008000%20Charleville-M%C3%A9zi%C3%A8res!5e0!3m2!1sfr!2sfr!4v1569415619660!5m2!1sfr!2sfr" width="100%" height="600" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
 </div>
 
 {% endblock %}

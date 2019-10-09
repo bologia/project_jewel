@@ -12,6 +12,12 @@
 <h1>Formulaire d'inscription</h1>
 <br>
 
+{% for message in app.flashes('success3') %}
+    <div class="alert alert-success">
+        {{ message }} <a href="{{ path('connexion') }}">connectez vous ici</a>
+    </div>
+{% endfor %}
+
     <!-- 'bootstrap_4_layout.html.twig' -->
     {{ form_start(form) }}
     
@@ -29,6 +35,7 @@
     {{ form_end(form) }}
 
 </div>
+
 <br><br><br>
 
 {% endblock %}
