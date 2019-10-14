@@ -29,7 +29,7 @@
     {{ form_row(form.confirmmdp, {'label': 'Confirmez votre Mot de passe'}) }}
 
     <center>
-    <button type="submit" class="btn btn-warning">S'inscrire</button>
+    <button type="submit" id="submit0" class="btn btn-warning">S'inscrire</button>
     </center>
 
     {{ form_end(form) }}
@@ -37,5 +37,22 @@
 </div>
 
 <br><br><br>
+
+{# pour empecher le double clique #}
+{# {% block javascripts %}
+    <script>
+        var clique = true;
+
+    $('#submit0').click(function(event) 
+    {
+        if(clique) 
+        {
+            clique = false;
+            return true;
+        }
+        else return false;
+    })
+    </script>
+{% endblock %} #}
 
 {% endblock %}

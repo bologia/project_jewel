@@ -42,6 +42,32 @@ class News
      */
     private $user;
 
+    // ça c'est pour le test unitaire
+
+    private $uri;
+    private $title;
+
+    public function setUri(string $uri) 
+    {
+        $this->uri = strtolower(str_replace(' ', '_', $uri));
+        return $this;
+    }
+
+    public function getUri()
+    {
+        return $this->uri;
+    }
+    public function setTitle(string $title) 
+    {
+        $this->title = $title;
+        return $this;
+    }
+    public function getTitle()
+    {
+        return $this->title;
+    }
+    // fin du test unitaire
+
     public function getId(): ?int
     {
         return $this->id;

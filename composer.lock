@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4dcbb6d239e0546ef51d200b52e2b7cc",
+    "content-hash": "6e7410f681197f60f25d6187d3cfa610",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -6911,16 +6911,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v4.3.2",
+            "version": "v4.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "573b5c4a36a171b94cf031d8dc6cc568082190f1"
+                "reference": "a7fd9e742c31ac2b607b166c9016bab51a36c574"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/573b5c4a36a171b94cf031d8dc6cc568082190f1",
-                "reference": "573b5c4a36a171b94cf031d8dc6cc568082190f1",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/a7fd9e742c31ac2b607b166c9016bab51a36c574",
+                "reference": "a7fd9e742c31ac2b607b166c9016bab51a36c574",
                 "shasum": ""
             },
             "require": {
@@ -6972,7 +6972,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2019-06-26T12:14:14+00:00"
+            "time": "2019-10-02T08:36:26+00:00"
         },
         {
             "name": "symfony/test-pack",
